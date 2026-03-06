@@ -1,0 +1,35 @@
+@startuml
+package "Backend API" {
+    [AuthController]
+    [UserController]
+}
+
+package "Services" {
+    [AuthService]
+    [TokenService]
+    [OTPService]
+    [UserService]
+    [AuthenticationSessionService]
+}
+
+package "Persistence" {
+    [UserRepository]
+    [AuthenticationSessionRepository]
+    [TokenRepository]
+    [OTPRepository]
+}
+
+[AuthController] --> [AuthService]
+[UserController] --> [UserService]
+
+[AuthService] --> [AuthenticationSessionService]
+[AuthService] --> [TokenService]
+[AuthService] --> [OTPService]
+[AuthService] --> [UserService]
+
+[AuthenticationSessionService] --> [AuthenticationSessionRepository]
+[TokenService] --> [TokenRepository]
+[OTPService] --> [OTPRepository]
+[UserService] --> [UserRepository]
+
+@enduml

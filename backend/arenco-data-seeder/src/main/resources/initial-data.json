@@ -1,0 +1,2609 @@
+[
+  {
+    "collection": "grupoDeUsuario",
+    "documents": [
+      {
+        "code": "administradores",
+        "name": "Administradores"
+      },
+      {
+        "code": "clientes",
+        "name": "Clientes"
+      },
+      {
+        "code": "clientesPessoaFisica",
+        "name": "Clientes Pessoa Física"
+      },
+      {
+        "code": "clientesPessoaJuridica",
+        "name": "Clientes Pessoa Jurídica"
+      }
+    ]
+  },
+  {
+    "collection": "permissao",
+    "documents": [
+      {
+        "code": "ROLE_ADMIN",
+        "name": "Permissão de Administrador"
+      },
+      {
+        "code": "ROLE_CUSTOMER",
+        "name": "Permissão de Clientes"
+      }
+    ]
+  },
+  {
+    "collection": "relacaoGruposEPermissoes",
+    "documents": [
+      {
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "administradores"
+        },
+        "permissaoModel": {
+          "$ref": "permissao",
+          "$code": "ROLE_ADMIN"
+        }
+      },
+      {
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientes"
+        },
+        "permissaoModel": {
+          "$ref": "permissao",
+          "$code": "ROLE_CUSTOMER"
+        }
+      }
+    ]
+  },
+  {
+    "collection": "relacaoGruposESuperGrupos",
+    "documents": [
+      {
+        "superGrupoModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientes"
+        },
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientesPessoaFisica"
+        }
+      },
+      {
+        "superGrupoModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientes"
+        },
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientesPessoaJuridica"
+        }
+      }
+    ]
+  },
+  {
+    "collection": "usuarios",
+    "documents": [
+      {
+        "username": "397.897.228-00",
+        "name": "Fabio Elias Filpi",
+        "idErp": "380",
+        "grupoContabil": "37",
+        "type": "CLIENTE",
+        "loginMethod": "USERNAME_ONLY"
+      },
+      {
+        "username": "123.456.789-09",
+        "name": "Rafael Abrantes",
+        "idErp": "120",
+        "grupoContabil": "37",
+        "type": "CLIENTE",
+        "loginMethod": "USERNAME_ONLY"
+      },
+      {
+        "username": "admin",
+        "name": "Administrador",
+        "password": "nimda",
+        "type": "ADMINISTRADOR"
+      },
+      {
+        "username": "admin-otp",
+        "name": "Administrador OTP",
+        "password": "nimda",
+        "type": "ADMINISTRADOR",
+        "loginMethod": "TWO_FACTOR_AUTHENTICATION"
+      }
+    ]
+  },
+  {
+    "collection": "contatos",
+    "documents": [
+      {
+        "value": "+5583999192097",
+        "type": "CELLPHONE",
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "123.456.789-09"
+        }
+      },
+      {
+        "value": "+5516996462627",
+        "type": "CELLPHONE",
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "397.897.228-00"
+        }
+      },
+      {
+        "value": "fabio.filpi@arenco.com.br",
+        "type": "EMAIL",
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "397.897.228-00"
+        }
+      },
+      {
+        "value": "+5516996462627",
+        "type": "CELLPHONE",
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin"
+        }
+      },
+      {
+        "value": "fabio.filpi@arenco.com.br",
+        "type": "EMAIL",
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin"
+        }
+      },
+      {
+        "value": "+5516996462627",
+        "type": "CELLPHONE",
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin-otp"
+        }
+      },
+      {
+        "value": "fabio.filpi@arenco.com.br",
+        "type": "EMAIL",
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin-otp"
+        }
+      }
+    ]
+  },
+  {
+    "collection": "relacaoUsuariosEGrupos",
+    "documents": [
+      {
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "397.897.228-00"
+        },
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientesPessoaFisica"
+        }
+      },
+      {
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin"
+        },
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "administradores"
+        }
+      },
+      {
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin-otp"
+        },
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "administradores"
+        }
+      }
+    ]
+  },
+  {
+    "collection": "preferenciaDeContato",
+    "documents": [
+      {
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "397.897.228-00"
+        },
+        "contactModel": {
+          "$ref": "contatos",
+          "$type": "CELLPHONE"
+        }
+      },
+      {
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin"
+        },
+        "contactModel": {
+          "$ref": "contatos",
+          "$type": "CELLPHONE"
+        }
+      },
+      {
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin-otp"
+        },
+        "contactModel": {
+          "$ref": "contatos",
+          "$type": "EMAIL"
+        }
+      }
+    ]
+  },
+  {
+    "collection": "configuracoesDeMensageria",
+    "documents": [
+      {
+        "state": "DISABLED",
+        "strategy": "EMAIL_ONLY",
+        "targetUsers": "BETA_USERS"
+      }
+    ]
+  },
+  {
+    "collection": "enderecos",
+    "documents": [
+      {
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "123.456.789-09"
+        },
+        "streetName": "R Dr Aldo Lupo",
+        "streetNumber": "207",
+        "cep": "14802-520",
+        "district": "Vila Harmonia",
+        "city": "ARARAQUARA",
+        "state": "SP ",
+        "country": "BRASIL",
+        "disabled": false
+      }
+    ]
+  },
+  {
+    "collection": "contratos",
+    "documents": [
+      {
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "123.456.789-09"
+        },
+        "empresa": "5",
+        "nomeEmpresa": "SPE ARENCO E PEREIRA ALVIM CONSTRUTORAS LTDA",
+        "numeContrato": "519",
+        "cliente": "120",
+        "nomeCliente": "RAFAEL ABRANTES",
+        "ccusto": "1010",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "enderecoCcusto": "AVENIDA JOSE BARBANTI NETO N. 200 - TORRE A",
+        "unidadeDeCusto": "505",
+        "receita": "1",
+        "denominacao": "VENDAS",
+        "sequenciaInicial": "1",
+        "valorContrato": 554698,
+        "valorContratoExtenso": "QUINHENTOS E CINQUENTA E QUATRO MIL E SEISCENTOS E NOVENTA E OITO REAIS",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "observacaoContrato": "TORRE A - UNIDADE 505",
+        "cic": "123.456.789-09",
+        "enderecoCompleto": "R Dr Aldo Lupo , 207-Sala 2",
+        "cidade": "ARARAQUARA",
+        "estado": "SP ",
+        "cepCompleto": "14802-520",
+        "tipoCcusto": "EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2",
+        "indicacaoSituacaoJuridica": "0",
+        "cidadeEmpresa": "ARARAQUARA",
+        "cnpjEmpresa": "14.511.600/0001-29",
+        "enderecoCompletoEmpresa": "AV RODRIGO FERNANDO GRILLO , 187-TERREO CONJ 01",
+        "bairro": "Vila Harmonia",
+        "tipoCorrecaoContrato": "0",
+        "cpfConjugue": "-",
+        "codigoNomeCliente": "000120-RAFAEL ABRANTES",
+        "enderecoCompletoCliente": "R Dr Aldo Lupo, No. 207, Sala 2, Vila Harmonia, ARARAQUARA-SP, Cep.: 14.802-520",
+        "telefones": "(0xx83) 9 9919-2097, , ",
+        "unidadeQuadraLote": "505",
+        "tipoUnidade": "UNIDADE",
+        "usuarioInclusao": "NOELLE",
+        "seguroEmbutidoParcela": "0",
+        "taxaJurosValorPresente": "0",
+        "numeContratoOriginal": "519",
+        "unidadeDeCustoOriginal": "505",
+        "totalSaldoEmAberto": "0",
+        "semCarenciaArredJurosMulta": "0"
+      }
+    ]
+  },
+  {
+    "collection": "aReceber",
+    "documents": [
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "014",
+        "sequenciaReparcela": "014",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 4866.31,
+        "vencimento": {
+          "$date": "2025-11-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 149617.4726,
+        "receita": "1",
+        "saldo": 99883.34,
+        "saldoQtdeMoeda": 149617.4726,
+        "saldoValorPresente": 99883.34,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "045",
+        "sequenciaReparcela": "045",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 214416.8,
+        "valorCorrigidoDataRef": 99883.34,
+        "valorCorrigidoHoje": 108219.15,
+        "valorCorrigidoVencimento": 114115.55,
+        "vencimento": {
+          "$date": "2028-02-15T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "016",
+        "sequenciaReparcela": "016",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 4831.71,
+        "vencimento": {
+          "$date": "2026-01-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "017",
+        "sequenciaReparcela": "017",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 4855.71,
+        "vencimento": {
+          "$date": "2026-02-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "018",
+        "sequenciaReparcela": "018",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 4877.84,
+        "vencimento": {
+          "$date": "2026-03-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "019",
+        "sequenciaReparcela": "019",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 4904.65,
+        "vencimento": {
+          "$date": "2026-04-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "020",
+        "sequenciaReparcela": "020",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 4928.34,
+        "vencimento": {
+          "$date": "2026-05-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "021",
+        "sequenciaReparcela": "021",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 4953.9,
+        "vencimento": {
+          "$date": "2026-06-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "022",
+        "sequenciaReparcela": "022",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 4977.59,
+        "vencimento": {
+          "$date": "2026-07-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "023",
+        "sequenciaReparcela": "023",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5003.46,
+        "vencimento": {
+          "$date": "2026-08-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "024",
+        "sequenciaReparcela": "024",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5028.71,
+        "vencimento": {
+          "$date": "2026-09-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "025",
+        "sequenciaReparcela": "025",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5052.71,
+        "vencimento": {
+          "$date": "2026-10-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "026",
+        "sequenciaReparcela": "026",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5078.89,
+        "vencimento": {
+          "$date": "2026-11-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "027",
+        "sequenciaReparcela": "027",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2026-12-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "028",
+        "sequenciaReparcela": "028",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-01-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "029",
+        "sequenciaReparcela": "029",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-02-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "030",
+        "sequenciaReparcela": "030",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-03-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "031",
+        "sequenciaReparcela": "031",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-04-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "032",
+        "sequenciaReparcela": "032",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-05-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "033",
+        "sequenciaReparcela": "033",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-06-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "034",
+        "sequenciaReparcela": "034",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-07-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "035",
+        "sequenciaReparcela": "035",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-08-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "036",
+        "sequenciaReparcela": "036",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-09-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "037",
+        "sequenciaReparcela": "037",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-10-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "038",
+        "sequenciaReparcela": "038",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-11-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "039",
+        "sequenciaReparcela": "039",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 5103.52,
+        "vencimento": {
+          "$date": "2027-12-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 14961.7473,
+        "receita": "1",
+        "saldo": 21441.68,
+        "saldoQtdeMoeda": 14961.7473,
+        "saldoValorPresente": 21441.68,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "041",
+        "sequenciaReparcela": "041",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 21441.68,
+        "valorCorrigidoDataRef": 21441.68,
+        "valorCorrigidoHoje": 23231.11,
+        "valorCorrigidoVencimento": 23072.51,
+        "vencimento": {
+          "$date": "2025-12-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 14961.7473,
+        "receita": "1",
+        "saldo": 21441.68,
+        "saldoQtdeMoeda": 14961.7473,
+        "saldoValorPresente": 21441.68,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "042",
+        "sequenciaReparcela": "042",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 21441.68,
+        "valorCorrigidoDataRef": 21441.68,
+        "valorCorrigidoHoje": 23231.11,
+        "valorCorrigidoVencimento": 23778.7,
+        "vencimento": {
+          "$date": "2026-06-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 14961.7473,
+        "receita": "1",
+        "saldo": 21441.68,
+        "saldoQtdeMoeda": 14961.7473,
+        "saldoValorPresente": 21441.68,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "043",
+        "sequenciaReparcela": "043",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 21441.68,
+        "valorCorrigidoDataRef": 21441.68,
+        "valorCorrigidoHoje": 23231.11,
+        "valorCorrigidoVencimento": 24496.87,
+        "vencimento": {
+          "$date": "2026-12-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 14961.7473,
+        "receita": "1",
+        "saldo": 21441.68,
+        "saldoQtdeMoeda": 14961.7473,
+        "saldoValorPresente": 21441.68,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "044",
+        "sequenciaReparcela": "044",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 21441.68,
+        "valorCorrigidoDataRef": 21441.68,
+        "valorCorrigidoHoje": 23231.11,
+        "valorCorrigidoVencimento": 24496.87,
+        "vencimento": {
+          "$date": "2027-06-20T03:00:00.000Z"
+        }
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "ccusto": "1010",
+        "cliente": 120,
+        "cnpjCpfDoCliente": "CPF.: 123.456.789-09",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "denominacao": "VENDAS",
+        "descricao": "CONTRATOS",
+        "descricaoMoeda": "POUPANCA COM MINIMO DE 0,5%",
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "empresa": "5",
+        "fatura": "0",
+        "indicacaoSituacaoJuridica": "0",
+        "moeda": "60",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "numeDoc": "521",
+        "qtdeMoeda": 3117.033,
+        "receita": "1",
+        "saldo": 4467.02,
+        "saldoQtdeMoeda": 3117.033,
+        "saldoValorPresente": 4467.02,
+        "seguroEmbutidoParcela": "0",
+        "sequencia": "015",
+        "sequenciaReparcela": "015",
+        "serie": "CT",
+        "taxaJurosValorPresente": "0",
+        "temCobrancaBoleto": "1",
+        "tipoCorrecaoContrato": "0",
+        "tipoDoc": "6",
+        "unidadeDeCusto": "504",
+        "valor": 4467.02,
+        "valorCorrigidoDataRef": 4467.02,
+        "valorCorrigidoHoje": 4839.82,
+        "valorCorrigidoVencimento": 4806.78,
+        "vencimento": {
+          "$date": "2025-12-20T03:00:00.000Z"
+        }
+      }
+    ]
+  },
+  {
+    "collection": "recebidos",
+    "documents": [
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "001",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2024-10-01T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2024-10-05T03:00:00.000Z"
+        },
+        "moeda": "20",
+        "valor": 12507.4,
+        "valorJuros": 0,
+        "valorDesc": 0,
+        "valorPago": 12507.4,
+        "valorVm": 0,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "183299",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 12507.4,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-4",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "1",
+        "descricaoTipoDeposito": "Tipo de deposito 1",
+        "sequenciaReparcela": "001",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "002",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2024-11-04T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2024-11-20T03:00:00.000Z"
+        },
+        "moeda": "20",
+        "valor": 12507.4,
+        "valorJuros": 0,
+        "valorDesc": 0,
+        "valorPago": 12507.4,
+        "valorVm": 0,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "183680",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 12507.4,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-16",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "002",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "003",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2024-12-03T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2024-12-20T03:00:00.000Z"
+        },
+        "moeda": "20",
+        "valor": 12507.4,
+        "valorJuros": 0,
+        "valorDesc": 0,
+        "valorPago": 12507.4,
+        "valorVm": 0,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "184058",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 12507.4,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-17",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "003",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "004",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-01-03T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-01-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 4466.9,
+        "valorJuros": 15.59,
+        "valorDesc": 0,
+        "valorPago": 4569.14,
+        "valorVm": 86.65,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "184548",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 4569.14,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-17",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "1",
+        "descricaoTipoDeposito": "Tipo de deposito 1",
+        "sequenciaReparcela": "004",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "005",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-02-04T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-02-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 4467.02,
+        "valorJuros": 15.9,
+        "valorDesc": 0,
+        "valorPago": 4600.12,
+        "valorVm": 117.2,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "185025",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 4600.12,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-16",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "005",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "006",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-03-06T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-03-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 4467.02,
+        "valorJuros": 14.34,
+        "valorDesc": 0,
+        "valorPago": 4628.17,
+        "valorVm": 146.81,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "185407",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 4628.17,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-14",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "006",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "007",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-04-02T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-04-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 4467.02,
+        "valorJuros": 15.89,
+        "valorDesc": 0,
+        "valorPago": 4654.35,
+        "valorVm": 171.44,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "185888",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 4654.35,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-18",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "007",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "008",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-05-05T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-05-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 4467.02,
+        "valorJuros": 15.9,
+        "valorDesc": 0,
+        "valorPago": 4688.64,
+        "valorVm": 205.72,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "186295",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 4688.64,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-15",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "008",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "009",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-06-03T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-06-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 4467.02,
+        "valorJuros": 17.77,
+        "valorDesc": 0,
+        "valorPago": 4720.75,
+        "valorVm": 235.96,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "186874",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 4720.75,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-17",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "009",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "010",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-07-02T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-07-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 4467.02,
+        "valorJuros": 19.02,
+        "valorDesc": 0,
+        "valorPago": 4751.61,
+        "valorVm": 265.57,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "187477",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 4751.61,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-18",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "010",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "011",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-08-04T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-08-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 4467.02,
+        "valorJuros": 17.15,
+        "valorDesc": 0,
+        "valorPago": 4784.65,
+        "valorVm": 300.48,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "187905",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 4784.65,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-16",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "011",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "012",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-09-02T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-09-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 4467.02,
+        "valorJuros": 19.32,
+        "valorDesc": 0,
+        "valorPago": 4817.06,
+        "valorVm": 330.72,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "188315",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 4817.06,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-18",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "012",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "013",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-10-02T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-10-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 4467.02,
+        "valorJuros": 19.63,
+        "valorDesc": 0,
+        "valorPago": 4848.54,
+        "valorVm": 361.89,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "188761",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 4848.54,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-18",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "013",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "040",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-06-03T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2025-06-20T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 21441.68,
+        "valorJuros": 85.29,
+        "valorDesc": 0,
+        "valorPago": 22659.57,
+        "valorVm": 1132.6,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "186876",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 22659.57,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-17",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "040",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      },
+      {
+        "agreementModel": {
+          "$ref": "agreementModel",
+          "$numeContrato": "519"
+        },
+        "empresa": "5",
+        "cliente": "831",
+        "numeDoc": "521",
+        "sequencia": "045",
+        "tipoDoc": "6",
+        "descricao": "CONTRATOS",
+        "serie": "CT",
+        "dataBase": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtEmissao": {
+          "$date": "2024-09-25T03:00:00.000Z"
+        },
+        "dtDeposito": {
+          "$date": "2025-05-12T03:00:00.000Z"
+        },
+        "vencimento": {
+          "$date": "2028-02-15T03:00:00.000Z"
+        },
+        "moeda": "60",
+        "valor": 214416.8,
+        "valorJuros": 0,
+        "valorDesc": 0,
+        "valorPago": 120000,
+        "valorVm": 5466.54,
+        "valorMulta": 0,
+        "observacao": "REC. EDIFICIO COMERCIAL 15 PAVIMENTOS 215 UNIDADES C/126.254,00 M2 504 EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "nomeClte": "RAFAEL ABRANTES",
+        "fatura": "0",
+        "numeDeposito": "186419",
+        "denominacao": "VENDAS",
+        "nomeCcusto": "EDIFICIO COMERCIAL SQUARE LARANJEIRAS",
+        "ccusto": "1010",
+        "receita": "1",
+        "banco": "237",
+        "valorDeposito": 120000,
+        "codigoBanco": "10",
+        "agencia": "1234",
+        "conta": "252-6",
+        "nomeBanco": "BANCO FICTICIO SA",
+        "tipoBaixa": "1",
+        "descricaoTipoBaixa": "DEPOSITO",
+        "diasAtraso": "-1009",
+        "unidadeDeCusto": "504",
+        "unidadeDeCustoOriginal": "504",
+        "valorSeguro": 0,
+        "tipoDeposito": "2",
+        "descricaoTipoDeposito": "BOLETO BANCARIO",
+        "sequenciaReparcela": "045",
+        "observacaoContrato": "TORRE A - UNIDADE 504"
+      }
+    ]
+  }
+]

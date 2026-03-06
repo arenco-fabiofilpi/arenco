@@ -1,0 +1,84 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' ENUM
+enum AuthenticationType {
+  PASSWORD_ONLY
+  PASSWORD_2FA
+  PASSWORD_RECOVERY
+}
+
+' ENTIDADES
+class User {
+  - id: UUID
+  - username: String
+  - passwordHash: String
+  - twoFactorType: AuthenticationType
+  ...
+}
+
+class AuthenticationSession {
+  - id: UUID
+  - type: AuthenticationType
+  - createdAt: DateTime
+  - expiresAt: DateTime
+  - loginAttempts: int
+  - userAgent: String
+  - ipAddress: String
+  ...
+}
+
+class AuthenticatedActivity {
+  - id: UUID
+  - createdAt: DateTime
+  - expiresAt: DateTime
+  - status: ActivityStatus
+  ...
+}
+
+enum ActivityStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+}
+
+' JWT TOKENS
+abstract class JwtToken {
+  - id: UUID
+  - token: String
+  - expiresAt: DateTime
+}
+
+class AccessToken
+class RefreshToken
+class PreAccessToken
+
+JwtToken <|-- AccessToken
+JwtToken <|-- RefreshToken
+JwtToken <|-- PreAccessToken
+
+' OTPs
+abstract class OneTimePassword {
+  - id: UUID
+  - code: String
+  - expiresAt: DateTime
+  - deliveredTo: String
+}
+
+class LoginOTP
+class PasswordRecoveryOTP
+
+OneTimePassword <|-- LoginOTP
+OneTimePassword <|-- PasswordRecoveryOTP
+
+' RELACIONAMENTOS
+User "1" --> "0..*" AuthenticationSession : has
+AuthenticationSession "1" --> "0..*" AuthenticatedActivity : includes
+
+AuthenticatedActivity "1" --> "0..1" AccessToken
+AuthenticatedActivity "1" --> "0..1" RefreshToken
+AuthenticatedActivity "1" --> "0..1" PreAccessToken
+AuthenticatedActivity "1" --> "0..1" LoginOTP
+AuthenticatedActivity "1" --> "0..1" PasswordRecoveryOTP
+
+@enduml

@@ -1,0 +1,36 @@
+# Maven
+**/target/
+**/.mvn/
+**/.classpath
+**/.project
+**/.settings/
+
+# Node
+**/node_modules/
+**/dist/
+**/.quasar/
+
+# Flutter
+**/build/
+**/.dart_tool/
+**/.idea/
+**/.vscode/
+
+# Logs & binários
+nohup.out
+*.log
+*.class
+*.jar
+
+# IDEs
+*.iml
+.idea/
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Outros
+*.env
+*.bak

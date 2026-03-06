@@ -1,0 +1,107 @@
+package br.com.arenco.arenco_clientes.entities;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
+@Getter
+@Setter
+@ToString
+public class AgreementModel {
+  @Id private String id;
+  @CreatedDate private Instant dateCreated;
+  @LastModifiedDate private Instant lastUpdated;
+  private String userId;
+
+  private String empresa;
+  private String nomeEmpresa;
+  private String numeContrato;
+  private String cliente;
+  private String nomeCliente;
+  private String ccusto;
+  private String nomeCcusto;
+  private String enderecoCcusto;
+  private String unidadeDeCusto;
+  private String receita;
+  private String denominacao;
+  private LocalDate dtEmissao;
+  private LocalDate dataBase;
+  private String sequenciaInicial;
+  private Double valorContrato;
+  private String valorContratoExtenso;
+  private String numeContratoAnterior;
+  private String temLanctoContab;
+  private String tipoDoc;
+  private String descricao;
+  private String observacaoContrato;
+  private String numeRenegociacao;
+  private String dataRenegociacao;
+  private String observacaoRenegociacao;
+  private String diferencaRenegociacao;
+  private LocalDate dataRescisao;
+  private String observacaoRescisao;
+  private String juros1;
+  private String dataJuros1;
+  private String juros2;
+  private String dataJuros2;
+  private String juros3;
+  private String dataJuros3;
+  private String cic;
+  private String cgcCliente;
+  private String inscricaoEstadualCliente;
+  private String enderecoCompleto;
+  private String cidade;
+  private String estado;
+  private String cepCompleto;
+  private String vendedor;
+  private String nomeVendedor;
+  private String tipoCcusto;
+  private String quadra;
+  private String lote;
+  private String indicacaoSituacaoJuridica;
+  private String parcelasLiberadaApos;
+  private String cidadeEmpresa;
+  private String cnpjEmpresa;
+  private String enderecoCompletoEmpresa;
+  private String bairro;
+  private String metragem;
+  private String tipoCorrecaoContrato;
+  private String cpfConjugue;
+  private String codigoNomeCliente;
+  private String enderecoCompletoCliente;
+  private String telefones;
+  private String unidadeQuadraLote;
+  private String tipoUnidade;
+  private String conjugueNome;
+  private String usuarioInclusao;
+  private LocalDate dataInclusao;
+  private String percentualUaCsn;
+  private String numeroContratoInterno;
+  private LocalDate clienteNascimento;
+  private String rgCliente;
+  private String percentualSeguro;
+  private String seguroEmbutidoParcela;
+  private String taxaJurosValorPresente;
+  private String numeroContratoMatriz;
+  private String numeContratoOriginal;
+  private String unidadeDeCustoOriginal;
+  private String quadraOriginal;
+  private String loteOriginal;
+  private String contratoAnteriorCessao;
+  private String dataEntregaUnidade;
+  private String nomeCorretor;
+  private String totalSaldoEmAberto;
+  private String codJurosCobrancaIndividual;
+  private String descJurosCobrancaIndividual;
+  private String percMultaCobrancaIndividual;
+  private String semCarenciaArredJurosMulta;
+  private String nomeUltimoComprador;
+  private String observacaoCadastroCliente;
+}

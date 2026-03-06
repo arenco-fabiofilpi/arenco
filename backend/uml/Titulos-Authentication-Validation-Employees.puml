@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+
+actor f AS "Funcionário"
+participant rea AS "Painel de Funcionários"
+participant tit AS "Serviço de Títulos"
+participant spr AS "Arenco Clientes (CRM/IDP)"
+
+
+== Consulta de Informações financeiras de clientes ==
+f -> rea : Consulta títulos de clientes
+rea -> tit : Consulta títulos a \n partir do ID Eficaz e \n token do funcionário
+tit -> spr : Valida se o Funcionário pode \n acessar informações de títulos.
+spr --> tit : Resposta
+
+alt Funcionário possui acesso
+    tit --> rea : Retorna informações
+    rea --> f : Retorna informações
+else Permissões insuficientes / Erro de Autenticação
+    tit --> rea : Retorna erro
+    rea --> f : Retorna erro
+end
+
+@enduml

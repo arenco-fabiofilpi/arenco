@@ -1,0 +1,17 @@
+# Pastas geradas
+target
+node_modules
+dist
+build
+out
+
+# Várias
+.git
+.idea
+.vscode
+
+# Arquivos que poluem
+*.min.js
+*.map
+*.lock
+*.iml

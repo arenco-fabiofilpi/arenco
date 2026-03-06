@@ -1,0 +1,157 @@
+[
+  {
+    "collection": "grupoDeUsuario",
+    "documents": [
+      {
+        "code": "administradores",
+        "name": "Administradores"
+      },
+      {
+        "code": "clientes",
+        "name": "Clientes"
+      },
+      {
+        "code": "clientesPessoaFisica",
+        "name": "Clientes Pessoa Física"
+      },
+      {
+        "code": "clientesPessoaJuridica",
+        "name": "Clientes Pessoa Jurídica"
+      }
+    ]
+  },
+  {
+    "collection": "permissao",
+    "documents": [
+      {
+        "code": "ROLE_ADMIN",
+        "name": "Permissão de Administrador"
+      },
+      {
+        "code": "ROLE_CUSTOMER",
+        "name": "Permissão de Clientes"
+      }
+    ]
+  },
+  {
+    "collection": "relacaoGruposEPermissoes",
+    "documents": [
+      {
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "administradores"
+        },
+        "permissaoModel": {
+          "$ref": "permissao",
+          "$code": "ROLE_ADMIN"
+        }
+      },
+      {
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientes"
+        },
+        "permissaoModel": {
+          "$ref": "permissao",
+          "$code": "ROLE_CUSTOMER"
+        }
+      }
+    ]
+  },
+  {
+    "collection": "relacaoGruposESuperGrupos",
+    "documents": [
+      {
+        "superGrupoModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientes"
+        },
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientesPessoaFisica"
+        }
+      },
+      {
+        "superGrupoModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientes"
+        },
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "clientesPessoaJuridica"
+        }
+      }
+    ]
+  },
+  {
+    "collection": "usuarios",
+    "documents": [
+      {
+        "username": "admin",
+        "name": "Administrador",
+        "password": "nimda",
+        "type": "ADMINISTRADOR"
+      }
+    ]
+  },
+  {
+    "collection": "contatos",
+    "documents": [
+      {
+        "value": "+5516996462627",
+        "type": "CELLPHONE",
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin"
+        }
+      },
+      {
+        "value": "fabio.filpi@arenco.com.br",
+        "type": "EMAIL",
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin"
+        }
+      }
+    ]
+  },
+  {
+    "collection": "relacaoUsuariosEGrupos",
+    "documents": [
+      {
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin"
+        },
+        "grupoDeUsuarioModel": {
+          "$ref": "grupoDeUsuario",
+          "$code": "administradores"
+        }
+      }
+    ]
+  },
+  {
+    "collection": "preferenciaDeContato",
+    "documents": [
+      {
+        "userModel": {
+          "$ref": "usuarios",
+          "$username": "admin"
+        },
+        "contactModel": {
+          "$ref": "contatos",
+          "$type": "CELLPHONE"
+        }
+      }    ]
+  },
+  {
+    "collection": "configuracoesDeMensageria",
+    "documents": [
+      {
+        "state": "DISABLED",
+        "strategy": "EMAIL_ONLY",
+        "targetUsers": "BETA_USERS"
+      }
+    ]
+  }
+]

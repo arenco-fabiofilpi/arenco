@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+
+actor c AS "Cliente"
+participant app AS "Aplicativo"
+participant tit AS "Serviço de Títulos"
+participant spr AS "Arenco Clientes (CRM/IDP)"
+
+
+== Consulta de Informações financeiras ==
+c -> app : Consulta títulos
+app -> tit : Consulta títulos do \n Usuário Atual
+tit -> spr : Consulta Proprietário \n do Token (/users/current)
+spr --> tit : Resposta
+
+alt Usuario atual do tipo Cliente
+    tit -> tit : Consulta Títulos \n do Proprietário do Token \n a partir do ID Eficaz
+    tit --> app : Retorna Informações
+    app --> c : Retorna informações
+else Usuário atual diferente de Cliente
+    tit --> app : Retorna erro
+    app --> c : Retorna erro
+end
+
+@enduml

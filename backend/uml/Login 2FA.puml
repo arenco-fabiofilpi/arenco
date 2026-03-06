@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor c AS "Cliente"
+participant a as "Aplicativo"
+participant b as "Backend"
+
+c -> a : Insere e-mail e senha
+a -> b : Envia e-mail e senha
+b --> a : Retorna pre-access token e meios disponiveis para envio de OTP
+a --> c : Retorna meios para envio de OTP disponiveis
+c -> a : Insere metodo de envio de OTP
+a -> b : Solicita disparo de OTP
+b --> c : Envia OTP
+c -> a : Insere OTP
+a -> b : Solicita validação de OTP junto com pre-access token
+b --> a : Retorna access token
+a --> c : Retorna acesso liberado
+
+
+
+@enduml

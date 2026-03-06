@@ -1,0 +1,56 @@
+// app global css in SCSS form
+
+// cabecalho
+#q-app .q-header {
+  background: $primary;
+  z-index: 9999;
+}
+
+#logoArenco img {
+  object-fit: contain !important;
+  cursor: pointer;
+}
+
+// definicoes gerais
+
+.q-page-container {
+  padding-bottom: 50px;
+}
+
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.row > * {
+  width: auto !important;
+}
+
+// formularios
+
+.q-field__label,
+.q-field__control-container {
+  padding: 0 !important;
+}
+.q-field__control-container .q-field__native {
+  padding-left: 0 !important;
+}
+.q-field--auto-height.q-field--labeled .q-field__native span {
+  margin-top: 25px;
+}
+
+@media (max-width: 767px) {
+  .filtros .q-field {
+    width: 1000px !important;
+    padding: 0;
+    margin: 0 -10px 10px !important;
+    max-width: calc(100% + 20px);
+  }
+}
+
+// login
+
+.page-login {
+  min-height: 100vh;
+  background: #f3f3f3;
+}

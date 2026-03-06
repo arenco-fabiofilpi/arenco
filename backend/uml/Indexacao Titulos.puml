@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+database ora AS "Oracle"
+control middle AS "CronJob de Indexação \n de Títulos"
+database mon AS "MongoDB"
+participant spr AS "Backend \n Aplicativo/Painel"
+participant pai AS "Painel Gerencial"
+participant app AS "Aplicativo do Cliente"
+
+middle -> ora : Consulta informações \n a cada 15 minutos
+ora --> middle : Retorna Informações
+middle -> mon : Armazena info
+
+== Consulta de Funcionario ==
+pai -> spr : Consome info
+spr -> mon : Consulta info
+mon --> spr : Resposta
+spr --> pai : Resposta
+
+== Consulta de Cliente ==
+app -> spr : Consome info
+spr -> mon : Consulta info
+mon --> spr : Resposta
+spr --> app : Resposta
+
+
+@enduml

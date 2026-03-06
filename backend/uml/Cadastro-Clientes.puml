@@ -1,0 +1,13 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Funcionario
+actor Cliente
+
+Eficaz -> CRM : Cria/Atualiza Cliente
+Funcionario -> CRM : Cadastra e-mail e telefone
+Cliente -> CRM : Faz processo de cadastrar senha
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+actor Client
+entity User
+entity AuthService
+entity OTPService
+entity TokenService
+entity AuthenticationSession
+
+== Etapa 1: Login com usuário/senha ==
+Client -> AuthService : POST /login (username, password)
+AuthService -> User : verifica credenciais
+alt User exige 2FA
+    AuthService -> AuthenticationSession : cria (type=PASSWORD_2FA)
+    AuthService -> OTPService : gera LoginOTP
+    AuthService -> TokenService : gera PreAccessToken
+    AuthService -> Client : retorna (preAccessToken + OTP enviado)
+else User não exige 2FA
+    AuthService -> AuthenticationSession : cria (type=PASSWORD_ONLY)
+    AuthService -> TokenService : gera AccessToken + RefreshToken
+    AuthService -> Client : retorna tokens
+end
+
+== Etapa 2: Validação do OTP ==
+Client -> AuthService : POST /validate-otp (preAccessToken, otp)
+AuthService -> AuthenticationSession : valida preAccessToken
+AuthService -> OTPService : valida otp
+AuthService -> TokenService : gera AccessToken + RefreshToken
+AuthService -> Client : retorna tokens
+
+@enduml

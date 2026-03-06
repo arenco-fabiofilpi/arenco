@@ -1,0 +1,15 @@
+@startuml
+[*] --> Created
+
+Created --> WaitingOTP : Se type == PASSWORD_2FA
+Created --> Active : Se type == PASSWORD_ONLY ou PASSWORD_RECOVERY com sucesso
+
+WaitingOTP --> Active : OTP Validado
+WaitingOTP --> Blocked : Excesso de loginAttempts
+Created --> Blocked : Excesso de loginAttempts
+
+Active --> Expired : Sessão expirada
+WaitingOTP --> Expired : PreAccessToken expirado
+Blocked --> [*] : Fim
+
+@enduml
