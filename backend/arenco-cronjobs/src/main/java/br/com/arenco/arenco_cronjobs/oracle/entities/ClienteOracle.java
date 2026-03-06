@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +19,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "cad_consulta_clientes")
+@Table(name = "CAD_CLIENTES")
 public class ClienteOracle implements Serializable {
   @Id
   @Column(name = "CODIGO")
@@ -43,9 +45,6 @@ public class ClienteOracle implements Serializable {
 
   @Column(name = "CEP2")
   private String cep2;
-
-  @Column(name = "CEP")
-  private String cep;
 
   @Column(name = "ESTADO")
   private String estado;
@@ -119,6 +118,195 @@ public class ClienteOracle implements Serializable {
   @Column(name = "VENDEDOR")
   private String vendedor;
 
-  @Column(name = "NOME_VENDEDOR")
-  private String nomeVendedor;
+  @Column(name = "ENDERECO_COBRANCA")
+  private String enderecoCobranca;
+
+  @Column(name = "NUMERO_COBRANCA")
+  private String numeroCobranca;
+
+  @Column(name = "CIDADE_COBRANCA")
+  private String cidadeCobranca;
+
+  @Column(name = "BAIRRO_COBRANCA")
+  private String bairroCobranca;
+
+  @Column(name = "CEP1_COBRANCA")
+  private String cep1Cobranca;
+
+  @Column(name = "CEP2_COBRANCA")
+  private String cep2Cobranca;
+
+  @Column(name = "ESTADO_COBRANCA")
+  private String estadoCobranca;
+
+  @Column(name = "DATA_NASCIMENTO")
+  private Date dataNascimento;
+
+  @Column(name = "PROFISSAO")
+  private String profissao;
+
+  @Column(name = "CARGO_FUNCAO")
+  private String cargoFuncao;
+
+  @Column(name = "PARTICIPACAO")
+  private BigDecimal participacao;
+
+  @Column(name = "ASSINA")
+  private String assina;
+
+  @Column(name = "TIPO_PROCURACAO")
+  private String tipoProcuracao;
+
+  @Column(name = "PARECER_VENDEDOR")
+  private String parecerVendedor;
+
+  @Column(name = "CADASTRANTE")
+  private String cadastrante;
+
+  @Column(name = "NUMERO_JCOML")
+  private String numeroJcoml;
+
+  @Column(name = "NUMERO_ALT_JCOML")
+  private String numeroAltJcoml;
+
+  @Column(name = "DATA_REGISTRO_JCOML")
+  private Date dataRegistroJcoml;
+
+  @Column(name = "DATA_ALTERACAO_JCOML")
+  private Date dataAlteracaoJcoml;
+
+  @Column(name = "CAPITAL_SOCIAL")
+  private BigDecimal capitalSocial;
+
+  @Column(name = "DATA_ALTERACAO")
+  private Date dataAlteracao;
+
+  @Column(name = "DATA_CADASTRAMENTO")
+  private Date dataCadastramento;
+
+  @Column(name = "FAX_COBRANCA")
+  private String faxCobranca;
+
+  @Column(name = "FONE_COBRANCA")
+  private String foneCobranca;
+
+  @Column(name = "CAIXA_POSTAL_COBRANCA")
+  private String caixaPostalCobranca;
+
+  @Column(name = "DDD_COBRANCA")
+  private String dddCobranca;
+
+  @Column(name = "MATRIZ")
+  private String matriz;
+
+  @Column(name = "CAIXA_POSTAL")
+  private String caixaPostal;
+
+  @Column(name = "NOME_FANTASIA")
+  private String nomeFantasia;
+
+  @Column(name = "COMPLENDE")
+  private String complende;
+
+  @Column(name = "UTILIZA_CEP_COMO_PADRAO")
+  private String utilizaCepComoPadrao;
+
+  @Column(name = "FORMULA_CREDITO")
+  private String formulaCredito;
+
+  @Column(name = "ENDERECO_ENTREGA")
+  private String enderecoEntrega;
+
+  @Column(name = "NUMERO_ENTREGA")
+  private String numeroEntrega;
+
+  @Column(name = "CIDADE_ENTREGA")
+  private String cidadeEntrega;
+
+  @Column(name = "BAIRRO_ENTREGA")
+  private String bairroEntrega;
+
+  @Column(name = "CEP1_ENTREGA")
+  private String cep1Entrega;
+
+  @Column(name = "CEP2_ENTREGA")
+  private String cep2Entrega;
+
+  @Column(name = "ESTADO_ENTREGA")
+  private String estadoEntrega;
+
+  @Column(name = "CAIXA_POSTAL_ENTREGA")
+  private String caixaPostalEntrega;
+
+  @Column(name = "DDD_ENTREGA")
+  private String dddEntrega;
+
+  @Column(name = "FONE_ENTREGA")
+  private String foneEntrega;
+
+  @Column(name = "FAX_ENTREGA")
+  private String faxEntrega;
+
+  @Column(name = "COMPLENDE_ENTREGA")
+  private String complendeEntrega;
+
+  @Column(name = "COMPLENDE_COBRANCA")
+  private String complendeCobranca;
+
+  @Column(name = "CNAE_ATIVIDADE")
+  private String cnaeAtividade;
+
+  @Column(name = "CNAE_DACATIV")
+  private String cnaeDacativ;
+
+  @Column(name = "CNAE_FISCAL_ATIV")
+  private String cnaeFiscalAtiv;
+
+  @Column(name = "DATA_EXPEDICAO_RG")
+  private Date dataExpedicaoRg;
+
+  @Column(name = "UTILIZA_GERA_PARCELAS_RECEBER")
+  private String utilizaGeraParcelasReceber;
+
+  @Column(name = "NASCIMENTO")
+  private Date nascimento;
+
+  @Column(name = "FONE4")
+  private String fone4;
+
+  @Column(name = "FONE3")
+  private String fone3;
+
+  @Column(name = "CELULAR1")
+  private String celular1;
+
+  @Column(name = "RG_DAC_CONJUGE")
+  private String rgDacConjuge;
+
+  @Column(name = "EMAIL_COMERCIAL")
+  private String emailComercial;
+
+  @Column(name = "RG_NUMERO_CONJUGE")
+  private String rgNumeroConjuge;
+
+  @Column(name = "DAC_CPF_CONJUGE")
+  private String dacCpfConjuge;
+
+  @Column(name = "NOME_CONJUGE")
+  private String nomeConjuge;
+
+  @Column(name = "NUMERO_CPF_CONJUGE")
+  private String numeroCpfConjuge;
+
+  @Column(name = "CELULAR2")
+  private String celular2;
+
+  @Column(name = "CELULAR3")
+  private String celular3;
+
+  @Column(name = "CONSUMIDOR_FINAL")
+  private String consumidorFinal;
+
+  @Column(name = "CODIGO_MUNICIPIO")
+  private String codigoMunicipio;
 }
