@@ -1,9 +1,8 @@
 package br.com.arenco.arenco_cronjobs.repositories;
 
 import br.com.arenco.arenco_cronjobs.entities.PasswordRecoveryModel;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import java.util.Optional;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface PasswordRecoveryModelRepository
     extends MongoRepository<PasswordRecoveryModel, String> {

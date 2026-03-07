@@ -2,12 +2,11 @@ package br.com.arenco.arenco_cronjobs.repositories;
 
 import br.com.arenco.arenco_cronjobs.entities.UserModel;
 import br.com.arenco.arenco_cronjobs.enums.UserType;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface UserModelRepository extends MongoRepository<UserModel, String> {
   Optional<UserModel> findByUsername(final String username);
