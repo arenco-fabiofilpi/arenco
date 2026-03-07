@@ -2,12 +2,19 @@ package br.com.arenco.arenco_cronjobs.mappers;
 
 import br.com.arenco.arenco_cronjobs.entities.CadClientesRefBancariasModel;
 import br.com.arenco.arenco_cronjobs.oracle.entities.CadClientesRefBancarias;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public enum CadClientesRefBancariasMapper {
   ;
 
   public static void sincronizar(
       final CadClientesRefBancarias source, final CadClientesRefBancariasModel target) {
+    if (source == null || target == null) {
+      log.error("Source and target objects cannot be null.");
+      return;
+    }
+
     target.setCliente(source.getCliente());
     target.setBanco(source.getBanco());
     target.setAgencia(source.getAgencia());
