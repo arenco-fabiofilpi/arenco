@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CadClientesSocioRepository
     extends JpaRepository<@NonNull CadClientesSocio, @NonNull CadClientesSocioId> {
-  List<CadClientesSocio> findAllByCliente(@NonNull final Integer cliente);
+  List<@NonNull CadClientesSocio> findAllByCliente(@NonNull final Integer cliente);
 }

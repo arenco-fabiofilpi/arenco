@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface CadClientesRefBancariasRepository
     extends JpaRepository<@NonNull CadClientesRefBancarias, @NonNull CadClientesRefBancariasId> {
-    List<CadClientesRefBancarias> findAllByCliente(@NonNull final Integer cliente);
+    List<@NonNull CadClientesRefBancarias> findAllByCliente(@NonNull final Integer cliente);
 }

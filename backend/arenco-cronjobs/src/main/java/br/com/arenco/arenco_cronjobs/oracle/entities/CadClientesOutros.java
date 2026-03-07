@@ -10,7 +10,6 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(CadClientesSocioId.class)
 @Table(name = "CAD_CLIENTES_OUTROS")
 public class CadClientesOutros {
   @Id
