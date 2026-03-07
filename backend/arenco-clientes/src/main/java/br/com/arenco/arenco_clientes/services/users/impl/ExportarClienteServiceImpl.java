@@ -295,27 +295,31 @@ public class ExportarClienteServiceImpl implements ExportarClienteService {
       List<String[]> rowsRefComerciais = new ArrayList<>();
 
       for (ClienteExportDTO dto : clientes) {
-        if (dto.getUserModel() != null) {
-          rowsCadClientes.add(userModelToRow(dto.getUserModel()));
+        if (dto.userModel() != null) {
+          rowsCadClientes.add(userModelToRow(dto.userModel()));
         }
-        if (dto.getCadTipoCliente() != null) {
-          rowsTipoClte.add(cadTipoClienteToRow(dto.getCadTipoCliente()));
+        if (dto.cadTipoClienteList() != null) {
+          for (CadTipoClienteModel cadTipoCliente : dto.cadTipoClienteList()) {
+            rowsTipoClte.add(cadTipoClienteToRow(cadTipoCliente));
+          }
         }
-        if (dto.getCadClientesOutrosModel() != null) {
-          rowsOutros.add(cadClientesOutrosToRow(dto.getCadClientesOutrosModel()));
+        if (dto.cadClientesOutrosModelList() != null) {
+          for (CadClientesOutrosModel s : dto.cadClientesOutrosModelList()) {
+            rowsOutros.add(cadClientesOutrosToRow(s));
+          }
         }
-        if (dto.getCadClientesSocioModelList() != null) {
-          for (CadClientesSocioModel s : dto.getCadClientesSocioModelList()) {
+        if (dto.cadClientesSocioModelList() != null) {
+          for (CadClientesSocioModel s : dto.cadClientesSocioModelList()) {
             rowsSocios.add(cadClientesSocioToRow(s));
           }
         }
-        if (dto.getCadClientesRefBancariasModelList() != null) {
-          for (CadClientesRefBancariasModel b : dto.getCadClientesRefBancariasModelList()) {
+        if (dto.cadClientesRefBancariasModelList() != null) {
+          for (CadClientesRefBancariasModel b : dto.cadClientesRefBancariasModelList()) {
             rowsRefBancarias.add(cadClientesRefBancariasToRow(b));
           }
         }
-        if (dto.getCadClientesRefComerciaisModelList() != null) {
-          for (CadClientesRefComerciaisModel c : dto.getCadClientesRefComerciaisModelList()) {
+        if (dto.cadClientesRefComerciaisModelList() != null) {
+          for (CadClientesRefComerciaisModel c : dto.cadClientesRefComerciaisModelList()) {
             rowsRefComerciais.add(cadClientesRefComerciaisToRow(c));
           }
         }

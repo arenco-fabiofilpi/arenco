@@ -54,10 +54,10 @@ public class CustomerFacadeImpl implements CustomerFacade {
     final var listaDeClientes = userService.findAllCustomers(ids);
     final var dtoList = new ArrayList<ClienteExportDTO>();
     for (final UserModel userModel : listaDeClientes) {
-      final var tipoClienteOptional =
-          cadTipoClienteModelRepository.findByCliente(userModel.getIdErp());
-      final var outrosDadosClienteOptional =
-          cadClientesOutrosModelRepository.findByCliente(userModel.getIdErp());
+      final var tipoClienteModelList =
+          cadTipoClienteModelRepository.findAllByCliente(userModel.getIdErp());
+      final var outrosDadosClienteList =
+          cadClientesOutrosModelRepository.findAllByCliente(userModel.getIdErp());
       final var socios = cadClientesSocioModelRepository.findAllByCliente(userModel.getIdErp());
       final var refBancarias =
           cadClientesRefBancariasModelRepository.findAllByCliente(userModel.getIdErp());
@@ -66,8 +66,8 @@ public class CustomerFacadeImpl implements CustomerFacade {
       final var dto =
           new ClienteExportDTO(
               userModel,
-              tipoClienteOptional.orElse(null),
-              outrosDadosClienteOptional.orElse(null),
+              tipoClienteModelList,
+              outrosDadosClienteList,
               socios,
               refBancarias,
               refComerciais);

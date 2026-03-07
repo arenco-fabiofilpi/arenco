@@ -321,10 +321,15 @@
     URL.revokeObjectURL(link.href);
   }
 
-  function exportarSelecionados(selectedIds: Set<string | number>) {
+  async function exportarSelecionados(selectedIds: Set<string | number>) {
     if (!selectedClientes.value.length) return;
-    const resp = apiClientes.post(`/clientes-api/v1/exportar`, selectedIds, {
-      responseType: 'blob',
+    const resp = await apiClientes.get(`/clientes-api/v1/exportar`, {
+      params: { ids: [...selectedIds] },
+      paramsSerializer: (params) =>
+        Object.entries(params)
+          .flatMap(([k, v]) => (Array.isArray(v) ? v.map((i) => `${k}=${i}`) : [`${k}=${v}`]))
+          .join('&'),
+      responseType: 'arraybuffer',
     });
 
     downloadBlob(resp, 'Clientes_Exportados.xlsx');

@@ -1,10 +1,10 @@
 package br.com.arenco.arenco_clientes.services.users.impl;
 
-import br.com.arenco.arenco_clientes.services.users.UserService;
-import br.com.arenco.arenco_clientes.utils.ServiceUtils;
 import br.com.arenco.arenco_clientes.entities.UserModel;
 import br.com.arenco.arenco_clientes.enums.UserType;
 import br.com.arenco.arenco_clientes.repositories.UserModelRepository;
+import br.com.arenco.arenco_clientes.services.users.UserService;
+import br.com.arenco.arenco_clientes.utils.ServiceUtils;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

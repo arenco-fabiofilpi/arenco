@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,7 +39,7 @@ public class ClienteExportController {
      * GET /api/clientes/exportar
      */
     @GetMapping("/exportar")
-    public ResponseEntity<byte[]> exportarClientes(final List<String> ids) throws IOException {
+    public ResponseEntity<byte[]> exportarClientes(@RequestParam final List<String> ids) throws IOException {
         // TODO: substituir por chamada ao seu repository/service real
         final byte[] arquivo = customerFacade.exportar(ids);
         return buildExcelResponse(arquivo, "Clientes_Exportados.xlsx");
