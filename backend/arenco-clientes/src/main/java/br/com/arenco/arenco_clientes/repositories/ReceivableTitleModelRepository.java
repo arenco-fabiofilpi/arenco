@@ -16,4 +16,6 @@ public interface ReceivableTitleModelRepository
       final String contratoId, final String sequencia);
 
   boolean existsByContratoIdAndSequencia(final String contratoId, final String sequencia);
+
+    List<ReceivableTitleModel> findByCliente(final int cliente);
 }

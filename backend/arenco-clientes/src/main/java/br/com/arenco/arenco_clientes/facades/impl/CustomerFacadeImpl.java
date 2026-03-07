@@ -27,7 +27,10 @@ public class CustomerFacadeImpl implements CustomerFacade {
   private final UsersFacade usersFacade;
   private final UserService userService;
   private final ExportarClienteService excelService;
+  private final AgreementModelRepository agreementModelRepository;
+  private final ReceivedTitleModelRepository receivedTitleModelRepository;
   private final CadTipoClienteModelRepository cadTipoClienteModelRepository;
+  private final ReceivableTitleModelRepository receivableTitleModelRepository;
   private final CadClientesSocioModelRepository cadClientesSocioModelRepository;
   private final CadClientesOutrosModelRepository cadClientesOutrosModelRepository;
   private final CadClientesRefBancariasModelRepository cadClientesRefBancariasModelRepository;
@@ -54,6 +57,10 @@ public class CustomerFacadeImpl implements CustomerFacade {
     final var listaDeClientes = userService.findAllCustomers(ids);
     final var dtoList = new ArrayList<ClienteExportDTO>();
     for (final UserModel userModel : listaDeClientes) {
+      final var contratos = agreementModelRepository.findAllByUserId(userModel.getId());
+      final var recebidosList =
+          receivedTitleModelRepository.findByCliente(String.valueOf(userModel.getIdErp()));
+      final var aReceberList = receivableTitleModelRepository.findByCliente(userModel.getIdErp());
       final var tipoClienteModelList =
           cadTipoClienteModelRepository.findAllByCliente(userModel.getIdErp());
       final var outrosDadosClienteList =
@@ -70,7 +77,10 @@ public class CustomerFacadeImpl implements CustomerFacade {
               outrosDadosClienteList,
               socios,
               refBancarias,
-              refComerciais);
+              refComerciais,
+              contratos,
+              aReceberList,
+              recebidosList);
       dtoList.add(dto);
     }
     return excelService.gerarPlanilhaComDados(dtoList);
