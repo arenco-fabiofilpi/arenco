@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContratoIdOracle {
-  private String empresa;
-  private String numeContrato;
+public class CadClientesRefBancariasId {
+  private Integer cliente;
+  private String banco;
+  private String agencia;
 }

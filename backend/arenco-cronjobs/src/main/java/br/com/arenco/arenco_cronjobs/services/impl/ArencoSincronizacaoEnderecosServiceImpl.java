@@ -1,10 +1,10 @@
 package br.com.arenco.arenco_cronjobs.services.impl;
 
-import br.com.arenco.arenco_cronjobs.oracle.entities.ClienteOracle;
-import br.com.arenco.arenco_cronjobs.services.ArencoSincronizacaoEnderecosService;
 import br.com.arenco.arenco_cronjobs.entities.AddressModel;
 import br.com.arenco.arenco_cronjobs.entities.UserModel;
+import br.com.arenco.arenco_cronjobs.oracle.entities.ClienteOracle;
 import br.com.arenco.arenco_cronjobs.repositories.AddressModelRepository;
+import br.com.arenco.arenco_cronjobs.services.ArencoSincronizacaoEnderecosService;
 import io.micrometer.common.util.StringUtils;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,7 @@ public class ArencoSincronizacaoEnderecosServiceImpl
   private boolean deveSincronizarEnderecos;
 
   @Override
-  public void sincronizarListaDeEnderecos(
-          final UserModel user, final ClienteOracle clienteOracle) {
+  public void sincronizarListaDeEnderecos(final UserModel user, final ClienteOracle clienteOracle) {
     if (!deveSincronizarEnderecos) {
       log.info("Sincronização de endereços desativada.");
       return;
@@ -41,7 +40,8 @@ public class ArencoSincronizacaoEnderecosServiceImpl
   }
 
   private Optional<EnderecoRecord> pegarEnderecoDoClienteOracle(final ClienteOracle clienteOracle) {
-    if (StringUtils.isNotEmpty(clienteOracle.getCep())
+    if (StringUtils.isNotEmpty(clienteOracle.getCep1())
+        && StringUtils.isNotEmpty(clienteOracle.getCep2())
         && StringUtils.isNotEmpty(clienteOracle.getEndereco())
         && StringUtils.isNotEmpty(clienteOracle.getNumero())) {
       return Optional.of(
@@ -50,7 +50,7 @@ public class ArencoSincronizacaoEnderecosServiceImpl
               clienteOracle.getNumero(),
               clienteOracle.getBairro(),
               clienteOracle.getCidade(),
-              clienteOracle.getCep(),
+              clienteOracle.getCep1() + " - " + clienteOracle.getCep2(),
               clienteOracle.getEstado(),
               clienteOracle.getPais()));
     }
@@ -60,10 +60,7 @@ public class ArencoSincronizacaoEnderecosServiceImpl
   private void sincronizarEndereco(final UserModel user, final EnderecoRecord enderecoRecord) {
     final var jaExistente =
         addressModelRepository.existsByStreetNameAndStreetNumberAndCepAndUserId(
-            enderecoRecord.endereco,
-            enderecoRecord.numero,
-            enderecoRecord.cep,
-                user.getId());
+            enderecoRecord.endereco, enderecoRecord.numero, enderecoRecord.cep, user.getId());
     if (!jaExistente) {
       final var novoEndereco = criarNovoEndereco(user, enderecoRecord);
       log.info(

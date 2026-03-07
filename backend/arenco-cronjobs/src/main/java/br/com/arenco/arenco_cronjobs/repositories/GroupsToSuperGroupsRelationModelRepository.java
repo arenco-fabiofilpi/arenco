@@ -1,9 +1,8 @@
 package br.com.arenco.arenco_cronjobs.repositories;
 
 import br.com.arenco.arenco_cronjobs.entities.GroupsToSuperGroupsRelationModel;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import java.util.List;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface GroupsToSuperGroupsRelationModelRepository
     extends MongoRepository<GroupsToSuperGroupsRelationModel, String> {

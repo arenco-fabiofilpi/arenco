@@ -2,10 +2,9 @@ package br.com.arenco.arenco_cronjobs.repositories;
 
 import br.com.arenco.arenco_cronjobs.entities.ContactModel;
 import br.com.arenco.arenco_cronjobs.enums.ContactType;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ContactModelRepository extends MongoRepository<ContactModel, String> {
   List<ContactModel> findByUserModelId(final String userModelId);

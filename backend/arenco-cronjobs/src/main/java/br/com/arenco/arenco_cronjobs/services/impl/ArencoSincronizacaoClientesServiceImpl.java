@@ -9,6 +9,7 @@ import br.com.arenco.arenco_cronjobs.oracle.entities.ClienteOracle;
 import br.com.arenco.arenco_cronjobs.repositories.UserGroupModelRepository;
 import br.com.arenco.arenco_cronjobs.repositories.UserModelRepository;
 import br.com.arenco.arenco_cronjobs.repositories.UsersToGroupsRelationModelRepository;
+import br.com.arenco.arenco_cronjobs.services.ArencoCadastrosExtrasService;
 import br.com.arenco.arenco_cronjobs.services.ArencoSincronizacaoClientesService;
 import br.com.arenco.arenco_cronjobs.services.ArencoSincronizacaoContatosService;
 import br.com.arenco.arenco_cronjobs.services.ArencoSincronizacaoEnderecosService;
@@ -25,8 +26,9 @@ public class ArencoSincronizacaoClientesServiceImpl implements ArencoSincronizac
   private final ArencoSincronizacaoContatosService arencoSincronizacaoContatosService;
   private final ArencoSincronizacaoEnderecosService arencoSincronizacaoEnderecosService;
   private final UsersToGroupsRelationModelRepository usersToGroupsRelationModelRepository;
+  private final ArencoCadastrosExtrasService arencoCadastrosExtrasService;
 
-  @Override
+    @Override
   public UserModel replicateCustomerFromOracleToMongo(final ClienteOracle clienteOracle) {
     final UserModel user = pegarClienteModel(clienteOracle);
     sincronizarDados(user, clienteOracle);
@@ -47,6 +49,7 @@ public class ArencoSincronizacaoClientesServiceImpl implements ArencoSincronizac
   private void sincronizarDados(final UserModel user, final ClienteOracle clienteOracle) {
     arencoSincronizacaoContatosService.sincronizarListaDeContatos(user, clienteOracle);
     arencoSincronizacaoEnderecosService.sincronizarListaDeEnderecos(user, clienteOracle);
+    arencoCadastrosExtrasService.sincronizarDadosExtra(user, clienteOracle);
     user.setName(clienteOracle.getNome() != null ? clienteOracle.getNome() : "");
   }
 

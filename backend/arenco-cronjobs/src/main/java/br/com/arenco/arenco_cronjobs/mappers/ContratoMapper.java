@@ -1,11 +1,11 @@
 package br.com.arenco.arenco_cronjobs.mappers;
 
-import br.com.arenco.arenco_cronjobs.oracle.entities.ContratoOracle;
-import br.com.arenco.arenco_cronjobs.oracle.entities.TituloAReceberOracle;
-import br.com.arenco.arenco_cronjobs.oracle.entities.TituloRecebidoOracle;
 import br.com.arenco.arenco_cronjobs.entities.AgreementModel;
 import br.com.arenco.arenco_cronjobs.entities.ReceivableTitleModel;
 import br.com.arenco.arenco_cronjobs.entities.ReceivedTitleModel;
+import br.com.arenco.arenco_cronjobs.oracle.entities.ContratoOracle;
+import br.com.arenco.arenco_cronjobs.oracle.entities.TituloAReceberOracle;
+import br.com.arenco.arenco_cronjobs.oracle.entities.TituloRecebidoOracle;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

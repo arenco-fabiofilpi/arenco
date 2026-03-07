@@ -1,11 +1,10 @@
 package br.com.arenco.arenco_cronjobs.repositories;
 
 import br.com.arenco.arenco_cronjobs.entities.AgreementModel;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import java.util.Optional;
 
 public interface AgreementModelRepository extends MongoRepository<AgreementModel, String> {
   Optional<AgreementModel> findByNumeContratoAndEmpresaAndUserId(
