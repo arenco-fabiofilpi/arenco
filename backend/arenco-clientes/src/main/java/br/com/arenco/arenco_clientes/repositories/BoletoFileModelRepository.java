@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface BoletoFileModelRepository
-    extends MongoRepository<BoletoFileModel, String> {
+public interface BoletoFileModelRepository extends MongoRepository<BoletoFileModel, String> {
   Optional<BoletoFileModel> findFirstByReceivableTitleIdAndFileTypeOrderByDateCreatedDesc(
       final String receivableTitleId, final FileType fileType);
 

@@ -40,9 +40,7 @@ public class ClienteExportController {
     @GetMapping("/exportar")
     public ResponseEntity<byte[]> exportarClientes(final List<String> ids) throws IOException {
         // TODO: substituir por chamada ao seu repository/service real
-        final List<ClienteExportDTO> clientes = customerFacade.buscarParaExportacao(ids);
-
-        final byte[] arquivo = excelService.gerarPlanilhaComDados(clientes);
+        final byte[] arquivo = customerFacade.exportar(ids);
         return buildExcelResponse(arquivo, "Clientes_Exportados.xlsx");
     }
 
