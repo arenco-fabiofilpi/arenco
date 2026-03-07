@@ -17,7 +17,5 @@ public interface UserModelRepository extends MongoRepository<UserModel, String> 
 
   Page<UserModel> findAllByUserType(final UserType userType, final Pageable pageable);
 
-  List<UserModel> findAllById(final List<String> ids);
-
   Optional<UserModel> findByIdAndUserType(final String id, final UserType userType);
 }

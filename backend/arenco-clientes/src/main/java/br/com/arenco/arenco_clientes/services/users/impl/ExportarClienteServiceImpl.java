@@ -1,195 +1,1121 @@
 package br.com.arenco.arenco_clientes.services.users.impl;
 
 import br.com.arenco.arenco_clientes.dtos.ClienteExportDTO;
+import br.com.arenco.arenco_clientes.entities.*;
 import br.com.arenco.arenco_clientes.services.users.ExportarClienteService;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
-
-
 @Service
 public class ExportarClienteServiceImpl implements ExportarClienteService {
-    // Colunas obrigatórias (amarelo) vs opcionais (cinza)
-    private static final String[] HEADERS = {
-            "Nome*", "Tipo de pessoa*", "Sexo*", "CPF/CNPJ", "Data nascimento",
-            "nacionalidade", "estado civil", "Regime casamento (caso casado)",
-            "Nome Cônjuge", "CPF Conjuge", "Data nascimento do cônjuge",
-            "Endereço Residencial", "Número do Endereço Residencial",
-            "Complemento do Endereço Residencial", "Bairro do endereço residencial",
-            "Município do endereço residencial", "CEP do endereço residencial",
-            "Telefone celular", "Email"
-    };
 
-    private static final double[] COLUMN_WIDTHS = {
-            15.0, 15.6, 16.0, 15.7, 17.6, 16.8, 17.6, 28.6, 17.9, 15.4,
-            26.4, 22.3, 33.0, 37.6, 29.4, 32.4, 27.7, 18.0, 22.0
-    };
+  private static final String[] HEADERS_CAD_CLIENTES = {
+    "id",
+    "dateCreated",
+    "lastUpdated",
+    "idErp",
+    "grupoContabil",
+    "cnpj",
+    "cpf",
+    "name",
+    "username",
+    "password",
+    "enabled",
+    "state",
+    "loginMethod",
+    "userType",
+    "endereco",
+    "numero",
+    "bairro",
+    "cidade",
+    "cep1",
+    "cep2",
+    "estado",
+    "pais",
+    "ddd",
+    "fone1",
+    "fone2",
+    "fonefax",
+    "emailInternet",
+    "cgcNumero",
+    "cgcFilial",
+    "cgcDac",
+    "cicNume",
+    "cicDac",
+    "rgNume",
+    "rgEmissao",
+    "rgUf",
+    "inscricao",
+    "inss",
+    "contato",
+    "wwwInternet",
+    "emUso",
+    "observacao",
+    "categoria",
+    "vendedor",
+    "enderecoCobranca",
+    "numeroCobranca",
+    "cidadeCobranca",
+    "bairroCobranca",
+    "cep1Cobranca",
+    "cep2Cobranca",
+    "estadoCobranca",
+    "dataNascimento",
+    "profissao",
+    "participacao",
+    "assina",
+    "tipoProcuracao",
+    "parecerVendedor",
+    "cadastrante",
+    "numeroJcoml",
+    "numeroAltJcoml",
+    "dataRegistroJcoml",
+    "dataAlteracaoJcoml",
+    "capitalSocial",
+    "dataAlteracao",
+    "dataCadastramento",
+    "faxCobranca",
+    "foneCobranca",
+    "caixaPostalCobranca",
+    "dddCobranca",
+    "matriz",
+    "caixaPostal",
+    "nomeFantasia",
+    "complende",
+    "utilizaCepComoPadrao",
+    "formulaCredito",
+    "enderecoEntrega",
+    "numeroEntrega",
+    "cidadeEntrega",
+    "bairroEntrega",
+    "cep1Entrega",
+    "cep2Entrega",
+    "estadoEntrega",
+    "caixaPostalEntrega",
+    "dddEntrega",
+    "foneEntrega",
+    "faxEntrega",
+    "complendeEntrega",
+    "complendeCobranca",
+    "cnaeAtividade",
+    "cnaeDacativ",
+    "cnaeFiscalAtiv",
+    "dataExpedicaoRg",
+    "utilizaGeraParcelasReceber",
+    "nascimento",
+    "fone4",
+    "fone3",
+    "celular1",
+    "rgDacConjuge",
+    "emailComercial",
+    "rgNumeroConjuge",
+    "dacCpfConjuge",
+    "nomeConjuge",
+    "numeroCpfConjuge",
+    "celular2",
+    "celular3",
+    "consumidorFinal",
+    "codigoMunicipio"
+  };
 
-    // Índices 0,1,2 são obrigatórios (amarelo), restante opcional (cinza)
-    private static final int REQUIRED_COLUMNS_COUNT = 3;
+  private static final String[] HEADERS_CAD_TIPO_CLTE = {
+    "id", "dateCreated", "lastUpdated", "cliente", "tipo"
+  };
 
-    public byte[] gerarPlanilhaTemplate() throws IOException {
-        try (XSSFWorkbook workbook = new XSSFWorkbook();
-             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+  private static final String[] HEADERS_CAD_CLIENTES_SOCIOS = {
+    "id",
+    "dateCreated",
+    "lastUpdated",
+    "cliente",
+    "nome",
+    "ddd",
+    "fone1",
+    "fone2",
+    "cicNume",
+    "cicDac",
+    "rgNume",
+    "rgEmissao",
+    "rgUf",
+    "dataNascimento",
+    "profissao",
+    "cargoFuncao",
+    "participacao",
+    "estado",
+    "assina",
+    "tipoProcuracao",
+    "cidade",
+    "cep1",
+    "cep2",
+    "bairro",
+    "numero",
+    "endereco",
+    "nomeFantasia",
+    "codigoRegimeCasamento",
+    "codigoEstadoCivil",
+    "nacionalidadeSocio"
+  };
 
-            Sheet sheet = workbook.createSheet("Clientes");
+  private static final String[] HEADERS_CAD_CLIENTES_OUTROS = {
+    "id",
+    "dateCreated",
+    "lastUpdated",
+    "cliente",
+    "clienteNascimento",
+    "clienteProfissao",
+    "conjugeNome",
+    "conjugeNascimento",
+    "conjugeCicNume",
+    "conjugeCicDac",
+    "conjugeRgNume",
+    "conjugeRgEmissao",
+    "conjugeRgUf",
+    "conjugeProfissao",
+    "regimeCasamento",
+    "nacionalidadeCliente",
+    "codigoRegimeCasamento",
+    "codigoEstadoCivil",
+    "rgCliente",
+    "clienteSexo",
+    "clienteNomeMae",
+    "clienteNomePai",
+    "clienteNaturalidade"
+  };
 
-            // --- Estilos ---
-            CellStyle headerObrigatorio = criarEstiloHeader(workbook, "FFFF99"); // amarelo
-            CellStyle headerOpcional = criarEstiloHeader(workbook, "C0C0C0");    // cinza
-            CellStyle dataStyle = criarEstiloData(workbook);
+  private static final String[] HEADERS_CAD_CLIENTES_REF_BANCARIAS = {
+    "id",
+    "dateCreated",
+    "lastUpdated",
+    "cliente",
+    "banco",
+    "agencia",
+    "endereco",
+    "numero",
+    "bairro",
+    "cidade",
+    "cep1",
+    "cep2",
+    "estado",
+    "fone1",
+    "fone2"
+  };
 
-            // --- Header (Row 0) ---
-            Row headerRow = sheet.createRow(0);
-            headerRow.setHeightInPoints(15f);
+  private static final String[] HEADERS_CAD_CLIENTES_REF_COMERCIAIS = {
+    "id",
+    "dateCreated",
+    "lastUpdated",
+    "cliente",
+    "nome",
+    "endereco",
+    "numero",
+    "bairro",
+    "cidade",
+    "cep1",
+    "cep2",
+    "estado",
+    "ddd",
+    "fone1",
+    "fone2"
+  };
 
-            for (int i = 0; i < HEADERS.length; i++) {
-                Cell cell = headerRow.createCell(i);
-                cell.setCellValue(HEADERS[i]);
-                cell.setCellStyle(i < REQUIRED_COLUMNS_COUNT ? headerObrigatorio : headerOpcional);
-            }
+  private static final String[] HEADERS_CONTRATOS = {
+    "id",
+    "dateCreated",
+    "lastUpdated",
+    "userId",
+    "empresa",
+    "nomeEmpresa",
+    "numeContrato",
+    "cliente",
+    "nomeCliente",
+    "ccusto",
+    "nomeCcusto",
+    "enderecoCcusto",
+    "unidadeDeCusto",
+    "receita",
+    "denominacao",
+    "dtEmissao",
+    "dataBase",
+    "sequenciaInicial",
+    "valorContrato",
+    "valorContratoExtenso",
+    "numeContratoAnterior",
+    "temLanctoContab",
+    "tipoDoc",
+    "descricao",
+    "observacaoContrato",
+    "numeRenegociacao",
+    "dataRenegociacao",
+    "observacaoRenegociacao",
+    "diferencaRenegociacao",
+    "dataRescisao",
+    "observacaoRescisao",
+    "juros1",
+    "dataJuros1",
+    "juros2",
+    "dataJuros2",
+    "juros3",
+    "dataJuros3",
+    "cic",
+    "cgcCliente",
+    "inscricaoEstadualCliente",
+    "enderecoCompleto",
+    "cidade",
+    "estado",
+    "cepCompleto",
+    "vendedor",
+    "nomeVendedor",
+    "tipoCcusto",
+    "quadra",
+    "lote",
+    "indicacaoSituacaoJuridica",
+    "parcelasLiberadaApos",
+    "cidadeEmpresa",
+    "cnpjEmpresa",
+    "enderecoCompletoEmpresa",
+    "bairro",
+    "metragem",
+    "tipoCorrecaoContrato",
+    "cpfConjugue",
+    "codigoNomeCliente",
+    "enderecoCompletoCliente",
+    "telefones",
+    "unidadeQuadraLote",
+    "tipoUnidade",
+    "conjugueNome",
+    "usuarioInclusao",
+    "dataInclusao",
+    "percentualUaCsn",
+    "numeroContratoInterno",
+    "clienteNascimento",
+    "rgCliente",
+    "percentualSeguro",
+    "seguroEmbutidoParcela",
+    "taxaJurosValorPresente",
+    "numeroContratoMatriz",
+    "numeContratoOriginal",
+    "unidadeDeCustoOriginal",
+    "quadraOriginal",
+    "loteOriginal",
+    "contratoAnteriorCessao",
+    "dataEntregaUnidade",
+    "nomeCorretor",
+    "totalSaldoEmAberto",
+    "codJurosCobrancaIndividual",
+    "descJurosCobrancaIndividual",
+    "percMultaCobrancaIndividual",
+    "semCarenciaArredJurosMulta",
+    "nomeUltimoComprador",
+    "observacaoCadastroCliente"
+  };
 
-            // --- Linha de exemplo (Row 1) ---
-            Row exemploRow = sheet.createRow(1);
-            exemploRow.setHeightInPoints(15f);
+  private static final String[] HEADERS_A_RECEBER = {
+    "id",
+    "dateCreated",
+    "lastUpdated",
+    "contratoId",
+    "pdfId",
+    "pngId",
+    "empresa",
+    "cliente",
+    "numeDoc",
+    "sequencia",
+    "dtEmissao",
+    "dataBase",
+    "fatura",
+    "nomeClte",
+    "numeFatura",
+    "observacao",
+    "saldo",
+    "serie",
+    "unidadeDeCusto",
+    "tipoDoc",
+    "valor",
+    "vencimento",
+    "descricao",
+    "nomeCcusto",
+    "ccusto",
+    "receita",
+    "denominacao",
+    "dataDeHoje",
+    "moeda",
+    "descricaoMoeda",
+    "qtdeMoeda",
+    "saldoQtdeMoeda",
+    "valorCorrigidoVencimento",
+    "valorCorrigidoHoje",
+    "valorCorrigidoDataRef",
+    "codigoPortador",
+    "temCobrancaBoleto",
+    "quadra",
+    "lote",
+    "indicacaoSituacaoJuridica",
+    "parcelasLiberadaApos",
+    "tipoCorrecaoContrato",
+    "taxaJurosValorPresente",
+    "saldoValorPresente",
+    "seguroEmbutidoParcela",
+    "percentualSeguro",
+    "codigoCobranca",
+    "cnpjCpfDoCliente",
+    "sequenciaReparcela",
+    "dataReparcela",
+    "totalReparcela"
+  };
 
-            String[] exemploData = {
-                    "Cliente Fictício", "F", "M", "766.553.690-53", "", "",
-                    "", "", "", "", "", "Rua A", "500", "Bloco A", "Lima",
-                    "Florianópolis", "88056590", "996394758", "exemplo@gmail.com"
-            };
+  private static final String[] HEADERS_RECEBIDOS = {
+    "id",
+    "dateCreated",
+    "lastUpdated",
+    "contratoId",
+    "empresa",
+    "cliente",
+    "numeDoc",
+    "sequencia",
+    "lote",
+    "tipoDoc",
+    "descricao",
+    "serie",
+    "dataBase",
+    "dtEmissao",
+    "dtDeposito",
+    "vencimento",
+    "moeda",
+    "valor",
+    "valorJuros",
+    "valorDesc",
+    "valorPago",
+    "valorVm",
+    "valorMulta",
+    "observacao",
+    "nomeClte",
+    "fatura",
+    "numeFatura",
+    "numeDeposito",
+    "denominacao",
+    "nomeCcusto",
+    "ccusto",
+    "receita",
+    "banco",
+    "valorDeposito",
+    "codigoBanco",
+    "agencia",
+    "conta",
+    "nomeBanco",
+    "tipoBaixa",
+    "descricaoTipoBaixa",
+    "diasAtraso",
+    "quadra",
+    "loteLoteamento",
+    "unidadeDeCusto",
+    "dataGravacao",
+    "quadraOriginal",
+    "loteOriginal",
+    "unidadeDeCustoOriginal",
+    "valorSeguro",
+    "tipoDeposito",
+    "descricaoTipoDeposito",
+    "sequenciaReparcela",
+    "totalReparcela",
+    "dataReparcela",
+    "observacaoContrato"
+  };
 
-            for (int i = 0; i < exemploData.length; i++) {
-                Cell cell = exemploRow.createCell(i);
-                cell.setCellValue(exemploData[i]);
-                cell.setCellStyle(dataStyle);
-            }
+  @Override
+  public byte[] gerarPlanilhaTemplate() throws IOException {
+    try (XSSFWorkbook workbook = new XSSFWorkbook();
+        ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-            // --- Larguras das colunas ---
-            for (int i = 0; i < COLUMN_WIDTHS.length; i++) {
-                sheet.setColumnWidth(i, (int) (COLUMN_WIDTHS[i] * 256));
-            }
+      CellStyle headerStyle = criarEstiloHeader(workbook, "C0C0C0");
+      CellStyle dataStyle = criarEstiloData(workbook);
 
-            workbook.write(out);
-            return out.toByteArray();
+      criarSheet(
+          workbook,
+          "CAD_CLIENTES",
+          HEADERS_CAD_CLIENTES,
+          Collections.emptyList(),
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "CAD_TIPO_CLTE",
+          HEADERS_CAD_TIPO_CLTE,
+          Collections.emptyList(),
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "CAD_CLIENTES_SOCIOS",
+          HEADERS_CAD_CLIENTES_SOCIOS,
+          Collections.emptyList(),
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "CAD_CLIENTES_OUTROS",
+          HEADERS_CAD_CLIENTES_OUTROS,
+          Collections.emptyList(),
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "CAD_CLIENTES_REF_BANCARIAS",
+          HEADERS_CAD_CLIENTES_REF_BANCARIAS,
+          Collections.emptyList(),
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "CAD_CLIENTES_REF_COMERCIAIS",
+          HEADERS_CAD_CLIENTES_REF_COMERCIAIS,
+          Collections.emptyList(),
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "CONTRATOS",
+          HEADERS_CONTRATOS,
+          Collections.emptyList(),
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "A_RECEBER",
+          HEADERS_A_RECEBER,
+          Collections.emptyList(),
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "RECEBIDOS",
+          HEADERS_RECEBIDOS,
+          Collections.emptyList(),
+          headerStyle,
+          dataStyle);
+
+      workbook.write(out);
+      return out.toByteArray();
+    }
+  }
+
+  @Override
+  public byte[] gerarPlanilhaComDados(List<ClienteExportDTO> clientes) throws IOException {
+    try (XSSFWorkbook workbook = new XSSFWorkbook();
+        ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+
+      CellStyle headerStyle = criarEstiloHeader(workbook, "C0C0C0");
+      CellStyle dataStyle = criarEstiloData(workbook);
+
+      List<String[]> rowsCadClientes = new ArrayList<>();
+      List<String[]> rowsTipoClte = new ArrayList<>();
+      List<String[]> rowsSocios = new ArrayList<>();
+      List<String[]> rowsOutros = new ArrayList<>();
+      List<String[]> rowsRefBancarias = new ArrayList<>();
+      List<String[]> rowsRefComerciais = new ArrayList<>();
+      List<String[]> rowsContratos = new ArrayList<>();
+      List<String[]> rowsAReceber = new ArrayList<>();
+      List<String[]> rowsRecebidos = new ArrayList<>();
+
+      for (ClienteExportDTO dto : clientes) {
+        if (dto.userModel() != null) {
+          rowsCadClientes.add(userModelToRow(dto.userModel()));
         }
-    }
-
-    /**
-     * Gera planilha preenchida com dados de clientes existentes (para exportação).
-     */
-    public byte[] gerarPlanilhaComDados(List<ClienteExportDTO> clientes) throws IOException {
-        try (XSSFWorkbook workbook = new XSSFWorkbook();
-             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-
-            Sheet sheet = workbook.createSheet("Clientes");
-
-            CellStyle headerObrigatorio = criarEstiloHeader(workbook, "FFFF99");
-            CellStyle headerOpcional = criarEstiloHeader(workbook, "C0C0C0");
-            CellStyle dataStyle = criarEstiloData(workbook);
-
-            // Header
-            Row headerRow = sheet.createRow(0);
-            headerRow.setHeightInPoints(15f);
-            for (int i = 0; i < HEADERS.length; i++) {
-                Cell cell = headerRow.createCell(i);
-                cell.setCellValue(HEADERS[i]);
-                cell.setCellStyle(i < REQUIRED_COLUMNS_COUNT ? headerObrigatorio : headerOpcional);
-            }
-
-            // Dados
-            int rowIdx = 1;
-            for (ClienteExportDTO cliente : clientes) {
-                Row row = sheet.createRow(rowIdx++);
-                row.setHeightInPoints(15f);
-
-                String[] valores = {
-                        emptyIfNull(cliente.getNome()),
-                        emptyIfNull(cliente.getTipoPessoa()),
-                        emptyIfNull(cliente.getSexo()),
-                        emptyIfNull(cliente.getCpfCnpj()),
-                        emptyIfNull(cliente.getDataNascimento()),
-                        emptyIfNull(cliente.getNacionalidade()),
-                        emptyIfNull(cliente.getEstadoCivil()),
-                        emptyIfNull(cliente.getRegimeCasamento()),
-                        emptyIfNull(cliente.getNomeConjuge()),
-                        emptyIfNull(cliente.getCpfConjuge()),
-                        emptyIfNull(cliente.getDataNascimentoConjuge()),
-                        emptyIfNull(cliente.getEnderecoResidencial()),
-                        emptyIfNull(cliente.getNumeroEndereco()),
-                        emptyIfNull(cliente.getComplementoEndereco()),
-                        emptyIfNull(cliente.getBairro()),
-                        emptyIfNull(cliente.getMunicipio()),
-                        emptyIfNull(cliente.getCep()),
-                        emptyIfNull(cliente.getTelefoneCelular()),
-                        emptyIfNull(cliente.getEmail())
-                };
-
-                for (int i = 0; i < valores.length; i++) {
-                    Cell cell = row.createCell(i);
-                    cell.setCellValue(valores[i]);
-                    cell.setCellStyle(dataStyle);
-                }
-            }
-
-            for (int i = 0; i < COLUMN_WIDTHS.length; i++) {
-                sheet.setColumnWidth(i, (int) (COLUMN_WIDTHS[i] * 256));
-            }
-
-            workbook.write(out);
-            return out.toByteArray();
+        if (dto.cadTipoClienteList() != null) {
+          for (CadTipoClienteModel cadTipoCliente : dto.cadTipoClienteList()) {
+            rowsTipoClte.add(cadTipoClienteToRow(cadTipoCliente));
+          }
         }
+        if (dto.cadClientesOutrosModelList() != null) {
+          for (CadClientesOutrosModel s : dto.cadClientesOutrosModelList()) {
+            rowsOutros.add(cadClientesOutrosToRow(s));
+          }
+        }
+        if (dto.cadClientesSocioModelList() != null) {
+          for (CadClientesSocioModel s : dto.cadClientesSocioModelList()) {
+            rowsSocios.add(cadClientesSocioToRow(s));
+          }
+        }
+        if (dto.cadClientesRefBancariasModelList() != null) {
+          for (CadClientesRefBancariasModel b : dto.cadClientesRefBancariasModelList()) {
+            rowsRefBancarias.add(cadClientesRefBancariasToRow(b));
+          }
+        }
+        if (dto.cadClientesRefComerciaisModelList() != null) {
+          for (CadClientesRefComerciaisModel c : dto.cadClientesRefComerciaisModelList()) {
+            rowsRefComerciais.add(cadClientesRefComerciaisToRow(c));
+          }
+        }
+        if (dto.contratos() != null) {
+          for (AgreementModel a : dto.contratos()) {
+            rowsContratos.add(agreementModelToRow(a));
+          }
+        }
+        if (dto.aReceberList() != null) {
+          for (ReceivableTitleModel r : dto.aReceberList()) {
+            rowsAReceber.add(receivableTitleModelToRow(r));
+          }
+        }
+        if (dto.recebidosList() != null) {
+          for (ReceivedTitleModel r : dto.recebidosList()) {
+            rowsRecebidos.add(receivedTitleModelToRow(r));
+          }
+        }
+      }
+
+      criarSheet(
+          workbook, "CAD_CLIENTES", HEADERS_CAD_CLIENTES, rowsCadClientes, headerStyle, dataStyle);
+      criarSheet(
+          workbook, "CAD_TIPO_CLTE", HEADERS_CAD_TIPO_CLTE, rowsTipoClte, headerStyle, dataStyle);
+      criarSheet(
+          workbook,
+          "CAD_CLIENTES_SOCIOS",
+          HEADERS_CAD_CLIENTES_SOCIOS,
+          rowsSocios,
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "CAD_CLIENTES_OUTROS",
+          HEADERS_CAD_CLIENTES_OUTROS,
+          rowsOutros,
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "CAD_CLIENTES_REF_BANCARIAS",
+          HEADERS_CAD_CLIENTES_REF_BANCARIAS,
+          rowsRefBancarias,
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook,
+          "CAD_CLIENTES_REF_COMERCIAIS",
+          HEADERS_CAD_CLIENTES_REF_COMERCIAIS,
+          rowsRefComerciais,
+          headerStyle,
+          dataStyle);
+      criarSheet(
+          workbook, "CONTRATOS", HEADERS_CONTRATOS, rowsContratos, headerStyle, dataStyle);
+      criarSheet(
+          workbook, "A_RECEBER", HEADERS_A_RECEBER, rowsAReceber, headerStyle, dataStyle);
+      criarSheet(
+          workbook, "RECEBIDOS", HEADERS_RECEBIDOS, rowsRecebidos, headerStyle, dataStyle);
+
+      workbook.write(out);
+      return out.toByteArray();
+    }
+  }
+
+  private void criarSheet(
+      XSSFWorkbook workbook,
+      String sheetName,
+      String[] headers,
+      List<String[]> rows,
+      CellStyle headerStyle,
+      CellStyle dataStyle) {
+    Sheet sheet = workbook.createSheet(sheetName);
+
+    Row headerRow = sheet.createRow(0);
+    headerRow.setHeightInPoints(15f);
+    for (int i = 0; i < headers.length; i++) {
+      Cell cell = headerRow.createCell(i);
+      cell.setCellValue(headers[i]);
+      cell.setCellStyle(headerStyle);
+      sheet.setColumnWidth(i, 20 * 256);
     }
 
-    // --- Estilos privados ---
-
-    private CellStyle criarEstiloHeader(Workbook workbook, String hexColor) {
-        CellStyle style = workbook.createCellStyle();
-
-        Font font = workbook.createFont();
-        font.setFontName("Calibri");
-        font.setFontHeightInPoints((short) 11);
-        font.setColor(IndexedColors.BLACK.getIndex());
-        style.setFont(font);
-
-        style.setFillForegroundColor(new org.apache.poi.xssf.usermodel.XSSFColor(
-                hexToBytes(hexColor), null));
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderBottom(BorderStyle.THIN);
-
-        return style;
+    int rowIdx = 1;
+    for (String[] rowData : rows) {
+      Row row = sheet.createRow(rowIdx++);
+      row.setHeightInPoints(15f);
+      for (int i = 0; i < rowData.length; i++) {
+        Cell cell = row.createCell(i);
+        cell.setCellValue(rowData[i]);
+        cell.setCellStyle(dataStyle);
+      }
     }
+  }
 
-    private CellStyle criarEstiloData(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
+  private String[] userModelToRow(UserModel u) {
+    return new String[] {
+      toStr(u.getId()),
+      toStr(u.getDateCreated()),
+      toStr(u.getLastUpdated()),
+      toStr(u.getIdErp()),
+      toStr(u.getGrupoContabil()),
+      toStr(u.getCnpj()),
+      toStr(u.getCpf()),
+      toStr(u.getName()),
+      toStr(u.getUsername()),
+      toStr(u.getPassword()),
+      toStr(u.isEnabled()),
+      toStr(u.getState()),
+      toStr(u.getLoginMethod()),
+      toStr(u.getUserType()),
+      toStr(u.getEndereco()),
+      toStr(u.getNumero()),
+      toStr(u.getBairro()),
+      toStr(u.getCidade()),
+      toStr(u.getCep1()),
+      toStr(u.getCep2()),
+      toStr(u.getEstado()),
+      toStr(u.getPais()),
+      toStr(u.getDdd()),
+      toStr(u.getFone1()),
+      toStr(u.getFone2()),
+      toStr(u.getFonefax()),
+      toStr(u.getEmailInternet()),
+      toStr(u.getCgcNumero()),
+      toStr(u.getCgcFilial()),
+      toStr(u.getCgcDac()),
+      toStr(u.getCicNume()),
+      toStr(u.getCicDac()),
+      toStr(u.getRgNume()),
+      toStr(u.getRgEmissao()),
+      toStr(u.getRgUf()),
+      toStr(u.getInscricao()),
+      toStr(u.getInss()),
+      toStr(u.getContato()),
+      toStr(u.getWwwInternet()),
+      toStr(u.getEmUso()),
+      toStr(u.getObservacao()),
+      toStr(u.getCategoria()),
+      toStr(u.getVendedor()),
+      toStr(u.getEnderecoCobranca()),
+      toStr(u.getNumeroCobranca()),
+      toStr(u.getCidadeCobranca()),
+      toStr(u.getBairroCobranca()),
+      toStr(u.getCep1Cobranca()),
+      toStr(u.getCep2Cobranca()),
+      toStr(u.getEstadoCobranca()),
+      toStr(u.getDataNascimento()),
+      toStr(u.getProfissao()),
+      toStr(u.getParticipacao()),
+      toStr(u.getAssina()),
+      toStr(u.getTipoProcuracao()),
+      toStr(u.getParecerVendedor()),
+      toStr(u.getCadastrante()),
+      toStr(u.getNumeroJcoml()),
+      toStr(u.getNumeroAltJcoml()),
+      toStr(u.getDataRegistroJcoml()),
+      toStr(u.getDataAlteracaoJcoml()),
+      toStr(u.getCapitalSocial()),
+      toStr(u.getDataAlteracao()),
+      toStr(u.getDataCadastramento()),
+      toStr(u.getFaxCobranca()),
+      toStr(u.getFoneCobranca()),
+      toStr(u.getCaixaPostalCobranca()),
+      toStr(u.getDddCobranca()),
+      toStr(u.getMatriz()),
+      toStr(u.getCaixaPostal()),
+      toStr(u.getNomeFantasia()),
+      toStr(u.getComplende()),
+      toStr(u.getUtilizaCepComoPadrao()),
+      toStr(u.getFormulaCredito()),
+      toStr(u.getEnderecoEntrega()),
+      toStr(u.getNumeroEntrega()),
+      toStr(u.getCidadeEntrega()),
+      toStr(u.getBairroEntrega()),
+      toStr(u.getCep1Entrega()),
+      toStr(u.getCep2Entrega()),
+      toStr(u.getEstadoEntrega()),
+      toStr(u.getCaixaPostalEntrega()),
+      toStr(u.getDddEntrega()),
+      toStr(u.getFoneEntrega()),
+      toStr(u.getFaxEntrega()),
+      toStr(u.getComplendeEntrega()),
+      toStr(u.getComplendeCobranca()),
+      toStr(u.getCnaeAtividade()),
+      toStr(u.getCnaeDacativ()),
+      toStr(u.getCnaeFiscalAtiv()),
+      toStr(u.getDataExpedicaoRg()),
+      toStr(u.getUtilizaGeraParcelasReceber()),
+      toStr(u.getNascimento()),
+      toStr(u.getFone4()),
+      toStr(u.getFone3()),
+      toStr(u.getCelular1()),
+      toStr(u.getRgDacConjuge()),
+      toStr(u.getEmailComercial()),
+      toStr(u.getRgNumeroConjuge()),
+      toStr(u.getDacCpfConjuge()),
+      toStr(u.getNomeConjuge()),
+      toStr(u.getNumeroCpfConjuge()),
+      toStr(u.getCelular2()),
+      toStr(u.getCelular3()),
+      toStr(u.getConsumidorFinal()),
+      toStr(u.getCodigoMunicipio())
+    };
+  }
 
-        Font font = workbook.createFont();
-        font.setFontName("Calibri");
-        font.setFontHeightInPoints((short) 11);
-        font.setColor(IndexedColors.BLACK.getIndex());
-        style.setFont(font);
+  private String[] cadTipoClienteToRow(CadTipoClienteModel m) {
+    return new String[] {
+      toStr(m.getId()),
+      toStr(m.getDateCreated()),
+      toStr(m.getLastUpdated()),
+      toStr(m.getCliente()),
+      toStr(m.getTipo())
+    };
+  }
 
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderBottom(BorderStyle.THIN);
+  private String[] cadClientesSocioToRow(CadClientesSocioModel m) {
+    return new String[] {
+      toStr(m.getId()),
+      toStr(m.getDateCreated()),
+      toStr(m.getLastUpdated()),
+      toStr(m.getCliente()),
+      toStr(m.getNome()),
+      toStr(m.getDdd()),
+      toStr(m.getFone1()),
+      toStr(m.getFone2()),
+      toStr(m.getCicNume()),
+      toStr(m.getCicDac()),
+      toStr(m.getRgNume()),
+      toStr(m.getRgEmissao()),
+      toStr(m.getRgUf()),
+      toStr(m.getDataNascimento()),
+      toStr(m.getProfissao()),
+      toStr(m.getCargoFuncao()),
+      toStr(m.getParticipacao()),
+      toStr(m.getEstado()),
+      toStr(m.getAssina()),
+      toStr(m.getTipoProcuracao()),
+      toStr(m.getCidade()),
+      toStr(m.getCep1()),
+      toStr(m.getCep2()),
+      toStr(m.getBairro()),
+      toStr(m.getNumero()),
+      toStr(m.getEndereco()),
+      toStr(m.getNomeFantasia()),
+      toStr(m.getCodigoRegimeCasamento()),
+      toStr(m.getCodigoEstadoCivil()),
+      toStr(m.getNacionalidadeSocio())
+    };
+  }
 
-        return style;
-    }
+  private String[] cadClientesOutrosToRow(CadClientesOutrosModel m) {
+    return new String[] {
+      toStr(m.getId()),
+      toStr(m.getDateCreated()),
+      toStr(m.getLastUpdated()),
+      toStr(m.getCliente()),
+      toStr(m.getClienteNascimento()),
+      toStr(m.getClienteProfissao()),
+      toStr(m.getConjugeNome()),
+      toStr(m.getConjugeNascimento()),
+      toStr(m.getConjugeCicNume()),
+      toStr(m.getConjugeCicDac()),
+      toStr(m.getConjugeRgNume()),
+      toStr(m.getConjugeRgEmissao()),
+      toStr(m.getConjugeRgUf()),
+      toStr(m.getConjugeProfissao()),
+      toStr(m.getRegimeCasamento()),
+      toStr(m.getNacionalidadeCliente()),
+      toStr(m.getCodigoRegimeCasamento()),
+      toStr(m.getCodigoEstadoCivil()),
+      toStr(m.getRgCliente()),
+      toStr(m.getClienteSexo()),
+      toStr(m.getClienteNomeMae()),
+      toStr(m.getClienteNomePai()),
+      toStr(m.getClienteNaturalidade())
+    };
+  }
 
-    private byte[] hexToBytes(String hex) {
-        return new byte[]{
-                (byte) Integer.parseInt(hex.substring(0, 2), 16),
-                (byte) Integer.parseInt(hex.substring(2, 4), 16),
-                (byte) Integer.parseInt(hex.substring(4, 6), 16)
-        };
-    }
+  private String[] cadClientesRefBancariasToRow(CadClientesRefBancariasModel m) {
+    return new String[] {
+      toStr(m.getId()),
+      toStr(m.getDateCreated()),
+      toStr(m.getLastUpdated()),
+      toStr(m.getCliente()),
+      toStr(m.getBanco()),
+      toStr(m.getAgencia()),
+      toStr(m.getEndereco()),
+      toStr(m.getNumero()),
+      toStr(m.getBairro()),
+      toStr(m.getCidade()),
+      toStr(m.getCep1()),
+      toStr(m.getCep2()),
+      toStr(m.getEstado()),
+      toStr(m.getFone1()),
+      toStr(m.getFone2())
+    };
+  }
 
-    private String emptyIfNull(String value) {
-        return value == null ? "" : value;
-    }
+  private String[] cadClientesRefComerciaisToRow(CadClientesRefComerciaisModel m) {
+    return new String[] {
+      toStr(m.getId()),
+      toStr(m.getDateCreated()),
+      toStr(m.getLastUpdated()),
+      toStr(m.getCliente()),
+      toStr(m.getNome()),
+      toStr(m.getEndereco()),
+      toStr(m.getNumero()),
+      toStr(m.getBairro()),
+      toStr(m.getCidade()),
+      toStr(m.getCep1()),
+      toStr(m.getCep2()),
+      toStr(m.getEstado()),
+      toStr(m.getDdd()),
+      toStr(m.getFone1()),
+      toStr(m.getFone2())
+    };
+  }
+
+  private String[] agreementModelToRow(AgreementModel m) {
+    return new String[] {
+      toStr(m.getId()),
+      toStr(m.getDateCreated()),
+      toStr(m.getLastUpdated()),
+      toStr(m.getUserId()),
+      toStr(m.getEmpresa()),
+      toStr(m.getNomeEmpresa()),
+      toStr(m.getNumeContrato()),
+      toStr(m.getCliente()),
+      toStr(m.getNomeCliente()),
+      toStr(m.getCcusto()),
+      toStr(m.getNomeCcusto()),
+      toStr(m.getEnderecoCcusto()),
+      toStr(m.getUnidadeDeCusto()),
+      toStr(m.getReceita()),
+      toStr(m.getDenominacao()),
+      toStr(m.getDtEmissao()),
+      toStr(m.getDataBase()),
+      toStr(m.getSequenciaInicial()),
+      toStr(m.getValorContrato()),
+      toStr(m.getValorContratoExtenso()),
+      toStr(m.getNumeContratoAnterior()),
+      toStr(m.getTemLanctoContab()),
+      toStr(m.getTipoDoc()),
+      toStr(m.getDescricao()),
+      toStr(m.getObservacaoContrato()),
+      toStr(m.getNumeRenegociacao()),
+      toStr(m.getDataRenegociacao()),
+      toStr(m.getObservacaoRenegociacao()),
+      toStr(m.getDiferencaRenegociacao()),
+      toStr(m.getDataRescisao()),
+      toStr(m.getObservacaoRescisao()),
+      toStr(m.getJuros1()),
+      toStr(m.getDataJuros1()),
+      toStr(m.getJuros2()),
+      toStr(m.getDataJuros2()),
+      toStr(m.getJuros3()),
+      toStr(m.getDataJuros3()),
+      toStr(m.getCic()),
+      toStr(m.getCgcCliente()),
+      toStr(m.getInscricaoEstadualCliente()),
+      toStr(m.getEnderecoCompleto()),
+      toStr(m.getCidade()),
+      toStr(m.getEstado()),
+      toStr(m.getCepCompleto()),
+      toStr(m.getVendedor()),
+      toStr(m.getNomeVendedor()),
+      toStr(m.getTipoCcusto()),
+      toStr(m.getQuadra()),
+      toStr(m.getLote()),
+      toStr(m.getIndicacaoSituacaoJuridica()),
+      toStr(m.getParcelasLiberadaApos()),
+      toStr(m.getCidadeEmpresa()),
+      toStr(m.getCnpjEmpresa()),
+      toStr(m.getEnderecoCompletoEmpresa()),
+      toStr(m.getBairro()),
+      toStr(m.getMetragem()),
+      toStr(m.getTipoCorrecaoContrato()),
+      toStr(m.getCpfConjugue()),
+      toStr(m.getCodigoNomeCliente()),
+      toStr(m.getEnderecoCompletoCliente()),
+      toStr(m.getTelefones()),
+      toStr(m.getUnidadeQuadraLote()),
+      toStr(m.getTipoUnidade()),
+      toStr(m.getConjugueNome()),
+      toStr(m.getUsuarioInclusao()),
+      toStr(m.getDataInclusao()),
+      toStr(m.getPercentualUaCsn()),
+      toStr(m.getNumeroContratoInterno()),
+      toStr(m.getClienteNascimento()),
+      toStr(m.getRgCliente()),
+      toStr(m.getPercentualSeguro()),
+      toStr(m.getSeguroEmbutidoParcela()),
+      toStr(m.getTaxaJurosValorPresente()),
+      toStr(m.getNumeroContratoMatriz()),
+      toStr(m.getNumeContratoOriginal()),
+      toStr(m.getUnidadeDeCustoOriginal()),
+      toStr(m.getQuadraOriginal()),
+      toStr(m.getLoteOriginal()),
+      toStr(m.getContratoAnteriorCessao()),
+      toStr(m.getDataEntregaUnidade()),
+      toStr(m.getNomeCorretor()),
+      toStr(m.getTotalSaldoEmAberto()),
+      toStr(m.getCodJurosCobrancaIndividual()),
+      toStr(m.getDescJurosCobrancaIndividual()),
+      toStr(m.getPercMultaCobrancaIndividual()),
+      toStr(m.getSemCarenciaArredJurosMulta()),
+      toStr(m.getNomeUltimoComprador()),
+      toStr(m.getObservacaoCadastroCliente())
+    };
+  }
+
+  private String[] receivableTitleModelToRow(ReceivableTitleModel m) {
+    return new String[] {
+      toStr(m.getId()),
+      toStr(m.getDateCreated()),
+      toStr(m.getLastUpdated()),
+      toStr(m.getContratoId()),
+      toStr(m.getPdfId()),
+      toStr(m.getPngId()),
+      toStr(m.getEmpresa()),
+      toStr(m.getCliente()),
+      toStr(m.getNumeDoc()),
+      toStr(m.getSequencia()),
+      toStr(m.getDtEmissao()),
+      toStr(m.getDataBase()),
+      toStr(m.getFatura()),
+      toStr(m.getNomeClte()),
+      toStr(m.getNumeFatura()),
+      toStr(m.getObservacao()),
+      toStr(m.getSaldo()),
+      toStr(m.getSerie()),
+      toStr(m.getUnidadeDeCusto()),
+      toStr(m.getTipoDoc()),
+      toStr(m.getValor()),
+      toStr(m.getVencimento()),
+      toStr(m.getDescricao()),
+      toStr(m.getNomeCcusto()),
+      toStr(m.getCcusto()),
+      toStr(m.getReceita()),
+      toStr(m.getDenominacao()),
+      toStr(m.getDataDeHoje()),
+      toStr(m.getMoeda()),
+      toStr(m.getDescricaoMoeda()),
+      toStr(m.getQtdeMoeda()),
+      toStr(m.getSaldoQtdeMoeda()),
+      toStr(m.getValorCorrigidoVencimento()),
+      toStr(m.getValorCorrigidoHoje()),
+      toStr(m.getValorCorrigidoDataRef()),
+      toStr(m.getCodigoPortador()),
+      toStr(m.getTemCobrancaBoleto()),
+      toStr(m.getQuadra()),
+      toStr(m.getLote()),
+      toStr(m.getIndicacaoSituacaoJuridica()),
+      toStr(m.getParcelasLiberadaApos()),
+      toStr(m.getTipoCorrecaoContrato()),
+      toStr(m.getTaxaJurosValorPresente()),
+      toStr(m.getSaldoValorPresente()),
+      toStr(m.getSeguroEmbutidoParcela()),
+      toStr(m.getPercentualSeguro()),
+      toStr(m.getCodigoCobranca()),
+      toStr(m.getCnpjCpfDoCliente()),
+      toStr(m.getSequenciaReparcela()),
+      toStr(m.getDataReparcela()),
+      toStr(m.getTotalReparcela())
+    };
+  }
+
+  private String[] receivedTitleModelToRow(ReceivedTitleModel m) {
+    return new String[] {
+      toStr(m.getId()),
+      toStr(m.getDateCreated()),
+      toStr(m.getLastUpdated()),
+      toStr(m.getContratoId()),
+      toStr(m.getEmpresa()),
+      toStr(m.getCliente()),
+      toStr(m.getNumeDoc()),
+      toStr(m.getSequencia()),
+      toStr(m.getLote()),
+      toStr(m.getTipoDoc()),
+      toStr(m.getDescricao()),
+      toStr(m.getSerie()),
+      toStr(m.getDataBase()),
+      toStr(m.getDtEmissao()),
+      toStr(m.getDtDeposito()),
+      toStr(m.getVencimento()),
+      toStr(m.getMoeda()),
+      toStr(m.getValor()),
+      toStr(m.getValorJuros()),
+      toStr(m.getValorDesc()),
+      toStr(m.getValorPago()),
+      toStr(m.getValorVm()),
+      toStr(m.getValorMulta()),
+      toStr(m.getObservacao()),
+      toStr(m.getNomeClte()),
+      toStr(m.getFatura()),
+      toStr(m.getNumeFatura()),
+      toStr(m.getNumeDeposito()),
+      toStr(m.getDenominacao()),
+      toStr(m.getNomeCcusto()),
+      toStr(m.getCcusto()),
+      toStr(m.getReceita()),
+      toStr(m.getBanco()),
+      toStr(m.getValorDeposito()),
+      toStr(m.getCodigoBanco()),
+      toStr(m.getAgencia()),
+      toStr(m.getConta()),
+      toStr(m.getNomeBanco()),
+      toStr(m.getTipoBaixa()),
+      toStr(m.getDescricaoTipoBaixa()),
+      toStr(m.getDiasAtraso()),
+      toStr(m.getQuadra()),
+      toStr(m.getLoteLoteamento()),
+      toStr(m.getUnidadeDeCusto()),
+      toStr(m.getDataGravacao()),
+      toStr(m.getQuadraOriginal()),
+      toStr(m.getLoteOriginal()),
+      toStr(m.getUnidadeDeCustoOriginal()),
+      toStr(m.getValorSeguro()),
+      toStr(m.getTipoDeposito()),
+      toStr(m.getDescricaoTipoDeposito()),
+      toStr(m.getSequenciaReparcela()),
+      toStr(m.getTotalReparcela()),
+      toStr(m.getDataReparcela()),
+      toStr(m.getObservacaoContrato())
+    };
+  }
+
+  private CellStyle criarEstiloHeader(Workbook workbook, String hexColor) {
+    CellStyle style = workbook.createCellStyle();
+
+    Font font = workbook.createFont();
+    font.setFontName("Calibri");
+    font.setFontHeightInPoints((short) 11);
+    font.setColor(IndexedColors.BLACK.getIndex());
+    style.setFont(font);
+
+    style.setFillForegroundColor(
+        new org.apache.poi.xssf.usermodel.XSSFColor(hexToBytes(hexColor), null));
+    style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+    style.setBorderTop(BorderStyle.THIN);
+    style.setBorderBottom(BorderStyle.THIN);
+
+    return style;
+  }
+
+  private CellStyle criarEstiloData(Workbook workbook) {
+    CellStyle style = workbook.createCellStyle();
+
+    Font font = workbook.createFont();
+    font.setFontName("Calibri");
+    font.setFontHeightInPoints((short) 11);
+    font.setColor(IndexedColors.BLACK.getIndex());
+    style.setFont(font);
+
+    style.setBorderTop(BorderStyle.THIN);
+    style.setBorderBottom(BorderStyle.THIN);
+
+    return style;
+  }
+
+  private byte[] hexToBytes(String hex) {
+    return new byte[] {
+      (byte) Integer.parseInt(hex.substring(0, 2), 16),
+      (byte) Integer.parseInt(hex.substring(2, 4), 16),
+      (byte) Integer.parseInt(hex.substring(4, 6), 16)
+    };
+  }
+
+  private String toStr(Object value) {
+    return value == null ? "" : value.toString();
+  }
 }
