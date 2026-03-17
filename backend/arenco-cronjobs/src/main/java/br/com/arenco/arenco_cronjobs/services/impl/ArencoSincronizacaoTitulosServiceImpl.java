@@ -139,7 +139,7 @@ public class ArencoSincronizacaoTitulosServiceImpl implements ArencoSincronizaca
     novoTitulo.setSequencia(sequencia);
     novoTitulo.setContratoId(contratoMongo.getId());
     receivedTitleModelRepository.save(novoTitulo);
-    log.info(
+    log.debug(
         "Novo Titulo recebido sequência {} do Contrato {} armazenado com sucesso",
         sequencia,
         contratoMongo.getNumeContrato());
