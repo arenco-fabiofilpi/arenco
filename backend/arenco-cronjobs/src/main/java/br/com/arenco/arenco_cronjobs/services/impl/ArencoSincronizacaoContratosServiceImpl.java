@@ -1,15 +1,15 @@
 package br.com.arenco.arenco_cronjobs.services.impl;
 
+import br.com.arenco.arenco_cronjobs.entities.AgreementModel;
+import br.com.arenco.arenco_cronjobs.entities.BoletoAProcessarModel;
+import br.com.arenco.arenco_cronjobs.entities.UserModel;
 import br.com.arenco.arenco_cronjobs.mappers.ContratoMapper;
 import br.com.arenco.arenco_cronjobs.oracle.entities.ContratoOracle;
 import br.com.arenco.arenco_cronjobs.oracle.entities.TituloAReceberOracle;
 import br.com.arenco.arenco_cronjobs.oracle.entities.TituloRecebidoOracle;
+import br.com.arenco.arenco_cronjobs.repositories.AgreementModelRepository;
 import br.com.arenco.arenco_cronjobs.services.ArencoSincronizacaoContratosService;
 import br.com.arenco.arenco_cronjobs.services.ArencoSincronizacaoTitulosService;
-import br.com.arenco.arenco_cronjobs.entities.AgreementModel;
-import br.com.arenco.arenco_cronjobs.entities.BoletoAProcessarModel;
-import br.com.arenco.arenco_cronjobs.entities.UserModel;
-import br.com.arenco.arenco_cronjobs.repositories.AgreementModelRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +27,14 @@ public class ArencoSincronizacaoContratosServiceImpl
 
   @Override
   public List<BoletoAProcessarModel> sincronizarContrato(
-      final String empresa,
       final UserModel clienteModel,
       final ContratoOracle contratoOracle,
       final List<TituloAReceberOracle> tituloAReceberOracleList,
       final List<TituloRecebidoOracle> tituloRecebidoOracleList) {
     final var boletosAProcessar = new ArrayList<BoletoAProcessarModel>();
     final var numeroContrato = contratoOracle.getNumeContrato();
+
+    final var empresa = contratoOracle.getEmpresa();
 
     log.debug("Iniciando sincronização do contrato {} para empresa {}", numeroContrato, empresa);
 

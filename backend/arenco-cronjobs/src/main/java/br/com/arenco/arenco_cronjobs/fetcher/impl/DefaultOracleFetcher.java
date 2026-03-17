@@ -1,10 +1,10 @@
 package br.com.arenco.arenco_cronjobs.fetcher.impl;
 
 import br.com.arenco.arenco_cronjobs.fetcher.OracleFetcher;
+import br.com.arenco.arenco_cronjobs.listeners.ShutdownEventListener;
 import br.com.arenco.arenco_cronjobs.oracle.entities.ClienteOracle;
 import br.com.arenco.arenco_cronjobs.records.ContratoOracleComTitulosRecord;
 import br.com.arenco.arenco_cronjobs.services.ArencoOracleService;
-import br.com.arenco.arenco_cronjobs.listeners.ShutdownEventListener;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,19 +36,15 @@ public class DefaultOracleFetcher implements OracleFetcher {
   private int defaultPageSize;
 
   /** Busca contratos no Oracle e retorna um mapa ClienteOracle -> Contratos (com títulos). */
-  public Map<ClienteOracle, List<ContratoOracleComTitulosRecord>> buscarContratosEClientesOracle(
-      final String empresaProperty, final String centroDeCustoProperty) {
+  public Map<ClienteOracle, List<ContratoOracleComTitulosRecord>> buscarContratosEClientesOracle() {
 
     final long t0 = System.nanoTime();
     log.info(
-        "🚀 Iniciando pesquisa no Oracle | empresa='{}' | cc='{}' | pageSize={} | maxPagesPerCC={}",
-        empresaProperty,
-        centroDeCustoProperty,
+        "🚀 Iniciando pesquisa no Oracle | pageSize={} | maxPagesPerCC={}",
         defaultPageSize,
         maxPagesPerCC);
 
-    final List<ContratoOracleComTitulosRecord> contratosOracle =
-        findOracleAgreements(empresaProperty, centroDeCustoProperty);
+    final List<ContratoOracleComTitulosRecord> contratosOracle = findOracleAgreements();
 
     log.info("🗺️ Montando mapa códigoCliente -> contratos ({} contratos)", contratosOracle.size());
     final Map<String, List<ContratoOracleComTitulosRecord>> porCodigoCliente =
@@ -75,83 +71,62 @@ public class DefaultOracleFetcher implements OracleFetcher {
   // =========================
   // Etapa 1: Buscar contratos
   // =========================
-  private List<ContratoOracleComTitulosRecord> findOracleAgreements(
-      final String empresaProperty, final String centroDeCustoProperty) {
-
-    final List<String> centros = extractCentrosDeCusto(centroDeCustoProperty);
-    if (centros.isEmpty()) {
-      log.warn("⚠️ Nenhum centro de custo informado. Retornando lista vazia.");
-      return List.of();
-    }
+  private List<ContratoOracleComTitulosRecord> findOracleAgreements() {
 
     final List<ContratoOracleComTitulosRecord> acumulado = new ArrayList<>();
     final long tStart = System.nanoTime();
 
-    for (int ccIdx = 0; ccIdx < centros.size(); ccIdx++) {
-      final String centro = centros.get(ccIdx);
+    Pageable pageable = PageRequest.of(0, defaultPageSize, Sort.by("numeContrato", "empresa"));
+    Page<@NonNull ContratoOracleComTitulosRecord> page;
+    final AtomicInteger contador = new AtomicInteger(0); // mantido conforme assinatura do service
+    int fetchedPages = 0;
+    long ccStart = System.nanoTime();
+
+    do {
       if (shutdownListener.isShuttingDown()) {
-        log.warn("🛑 Encerrando busca (shutdown solicitado) no início do CC='{}'.", centro);
+        log.warn(
+            "🛑 Encerrando busca (shutdown solicitado) durante página {}.",
+            pageable.getPageNumber());
         break;
       }
 
-      Pageable pageable = PageRequest.of(0, defaultPageSize, Sort.by("numeContrato", "empresa"));
-      Page<@NonNull ContratoOracleComTitulosRecord> page;
-      final AtomicInteger contador = new AtomicInteger(0); // mantido conforme assinatura do service
-      int fetchedPages = 0;
-      long ccStart = System.nanoTime();
+      final int currentPage = pageable.getPageNumber();
+      page = arencoOracleService.pesquisarContratos(pageable, contador);
+      fetchedPages++;
 
-      log.info("📍 [{} / {}] Iniciando CC='{}'…", ccIdx + 1, centros.size(), centro);
+      final int pageSize = page.getNumberOfElements();
+      acumulado.addAll(page.getContent());
 
-      do {
-        if (shutdownListener.isShuttingDown()) {
-          log.warn(
-              "🛑 Encerrando busca (shutdown solicitado) durante CC='{}', página {}.",
-              centro,
-              pageable.getPageNumber());
-          break;
-        }
-
-        final int currentPage = pageable.getPageNumber();
-        page = arencoOracleService.pesquisarContratos(empresaProperty, centro, pageable, contador);
-        fetchedPages++;
-
-        final int pageSize = page.getNumberOfElements();
-        acumulado.addAll(page.getContent());
-
-        final Integer totalPages = page.hasContent() ? page.getTotalPages() : null;
-        final long elapsedCC = System.nanoTime() - ccStart;
-        final String progressStr = progressPageString(fetchedPages, totalPages);
-
-        log.info(
-            "📄 CC='{}' {} | page={} size={} acumulado={} contador={}",
-            centro,
-            progressStr,
-            currentPage,
-            pageSize,
-            acumulado.size(),
-            contador.get());
-
-        pageable = pageable.next();
-
-        // Respeita limite de páginas, se configurado
-        if (maxPagesPerCC != null && fetchedPages >= maxPagesPerCC) {
-          log.info(
-              "⛔ Limite de páginas atingido para CC='{}' ({} páginas em {}).",
-              centro,
-              fetchedPages,
-              human(elapsedCC));
-          break;
-        }
-
-      } while (page.hasContent());
+      final Integer totalPages = page.hasContent() ? page.getTotalPages() : null;
+      final long elapsedCC = System.nanoTime() - ccStart;
+      final String progressStr = progressPageString(fetchedPages, totalPages);
 
       log.info(
-          "✅ Finalizado CC='{}' | páginasBuscadas={} | acumuladoGlobal={} | ⏱️ {}",
-          centro,
-          fetchedPages,
+          "📄 {} | page={} size={} acumulado={} contador={}",
+          progressStr,
+          currentPage,
+          pageSize,
           acumulado.size(),
-          human(System.nanoTime() - ccStart));
-    }
+          contador.get());
+
+      pageable = pageable.next();
+
+      // Respeita limite de páginas, se configurado
+      if (maxPagesPerCC != null && fetchedPages >= maxPagesPerCC) {
+        log.info(
+            "⛔ Limite de páginas atingido ({} páginas em {}).",
+            fetchedPages,
+            human(elapsedCC));
+        break;
+      }
+
+    } while (page.hasContent());
+
+    log.info(
+        "✅ Finalizado páginasBuscadas={} | acumuladoGlobal={} | ⏱️ {}",
+        fetchedPages,
+        acumulado.size(),
+        human(System.nanoTime() - ccStart));
 
     log.info(
         "📦 Total contratos obtidos: {} | ⏱️ {}",

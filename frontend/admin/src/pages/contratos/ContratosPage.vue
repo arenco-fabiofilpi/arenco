@@ -151,6 +151,8 @@
     label: string;
     field: string;
   }[] = [
+    { name: 'empresa', align: 'left', label: 'Empresa', field: 'empresa' },
+    { name: 'nomeEmpresa', align: 'left', label: 'Nome da Empresa', field: 'nomeEmpresa' },
     { name: 'numeContrato', align: 'left', label: 'Contrato', field: 'numeContrato' },
     { name: 'cliente', align: 'left', label: 'Cliente', field: 'cliente' },
     { name: 'nomeCliente', align: 'left', label: 'Nome do Cliente', field: 'nomeCliente' },
@@ -161,9 +163,7 @@
       field: 'nomeCcusto',
     } /* corrige tab/typo */,
     { name: 'ccusto', align: 'left', label: 'Centro de Custo', field: 'ccusto' },
-    { name: 'unidadeDeCusto', align: 'left', label: 'Unidade de Custo', field: 'unidadeDeCusto' },
     { name: 'valorContrato', align: 'left', label: 'Valor', field: 'valorContrato' },
-    { name: 'nomeEmpresa', align: 'left', label: 'Nome da Empresa', field: 'nomeEmpresa' },
   ];
 
   /** -------- Ordenação (useTriStateMultiSort) -------- */

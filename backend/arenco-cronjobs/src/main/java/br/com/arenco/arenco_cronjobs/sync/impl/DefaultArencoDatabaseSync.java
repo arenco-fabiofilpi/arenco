@@ -41,7 +41,7 @@ public class DefaultArencoDatabaseSync implements ArencoDatabaseSync {
   @Override
   public void sincronizarBases() {
     final Map<ClienteOracle, List<ContratoOracleComTitulosRecord>> informacoesOracle =
-        oracleFetcher.buscarContratosEClientesOracle(empresaProperty, centroDeCustoProperty);
+        oracleFetcher.buscarContratosEClientesOracle();
     if (informacoesOracle == null || informacoesOracle.isEmpty()) {
       log.warn("⚠️ Nenhum informação (Clientes e Contratos) foi encontrada no Oracle.");
       return;
@@ -49,7 +49,7 @@ public class DefaultArencoDatabaseSync implements ArencoDatabaseSync {
     log.info("🔍 Encontrados {} Contratos/Clientes Oracle.", informacoesOracle.size());
     final var clientesModelEContratosOracleRecord = sincronizarClientes(informacoesOracle);
     final List<BoletoAProcessarModel> boletoAProcessarModelList =
-        sincronizarContratos(empresaProperty, clientesModelEContratosOracleRecord);
+        sincronizarContratos(clientesModelEContratosOracleRecord);
     if (boletoAProcessarModelList != null && !boletoAProcessarModelList.isEmpty()) {
       jobInfoModelService.createManualTrigger(
           JobType.SINCRONIZAR_BOLETOS, "Solicitado pela sincronização de bases de dados");
@@ -57,7 +57,6 @@ public class DefaultArencoDatabaseSync implements ArencoDatabaseSync {
   }
 
   private List<BoletoAProcessarModel> sincronizarContratos(
-      final String empresa,
       final List<ContratoOracleEClienteModelRecord> clientesModelEContratosOracleRecord) {
     log.info("🚀 Iniciando sincronização de contratos...");
     final long start = System.currentTimeMillis();
@@ -94,7 +93,7 @@ public class DefaultArencoDatabaseSync implements ArencoDatabaseSync {
         try {
           final List<BoletoAProcessarModel> innerBoletosAProcessarList =
               contratoService.sincronizarContrato(
-                  empresa, clienteModel, contratoOracle, titulosEmAberto, titulosFechados);
+                  clienteModel, contratoOracle, titulosEmAberto, titulosFechados);
           boletoAProcessarModelList.addAll(innerBoletosAProcessarList);
           log.debug(
               "Adicionado {} Boletos a Processar para o Contrato {}",

@@ -6,6 +6,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface OracleFetcher {
-  Map<ClienteOracle, List<ContratoOracleComTitulosRecord>> buscarContratosEClientesOracle(
-      final String empresaProperty, final String centroDeCustoProperty);
+  Map<ClienteOracle, List<ContratoOracleComTitulosRecord>> buscarContratosEClientesOracle();
 }

@@ -13,8 +13,6 @@ public interface ArencoOracleService {
   Optional<ClienteOracle> pesquisarClienteOracle(final String codigoErp);
 
   Page<@NonNull ContratoOracleComTitulosRecord> pesquisarContratos(
-      final String empresa,
-      final String centroDeCusto,
       final Pageable pageable,
       final AtomicInteger contador);
 }

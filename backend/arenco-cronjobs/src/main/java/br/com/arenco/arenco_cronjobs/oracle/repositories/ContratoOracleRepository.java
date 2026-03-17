@@ -11,13 +11,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ContratoOracleRepository extends JpaRepository<@NonNull ContratoOracle, @NonNull ContratoIdOracle> {
+public interface ContratoOracleRepository
+    extends JpaRepository<@NonNull ContratoOracle, @NonNull ContratoIdOracle> {
 
   @Query(
-      value = "SELECT c FROM ContratoOracle c WHERE c.ccusto = :ccusto AND c.empresa = :empresa",
-      countQuery = "SELECT COUNT(c) FROM ContratoOracle c WHERE c.ccusto = :ccusto AND c.empresa = :empresa")
-  Page<@NonNull ContratoOracle> findContratoOraclesByCcustoAndEmpresa(
-      @Param("ccusto") final String ccusto,
-      @Param("empresa") final String empresa,
-      final Pageable pageable);
+      value = "SELECT c FROM ContratoOracle c",
+      countQuery = "SELECT COUNT(c) FROM ContratoOracle c")
+  Page<@NonNull ContratoOracle> findContratoOracles(final Pageable pageable);
 }

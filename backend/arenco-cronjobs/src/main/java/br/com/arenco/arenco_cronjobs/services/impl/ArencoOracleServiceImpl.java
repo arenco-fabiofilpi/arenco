@@ -41,35 +41,18 @@ public class ArencoOracleServiceImpl implements ArencoOracleService {
 
   @Override
   public Page<@NonNull ContratoOracleComTitulosRecord> pesquisarContratos(
-      final String empresa,
-      final String centroDeCusto,
-      final Pageable pageable,
-      final AtomicInteger contador) {
-    log.info(
-        "Iniciando pesquisa de contratos. Empresa: {}, Centro de Custo: {}, Página: {}",
-        empresa,
-        centroDeCusto,
-        pageable);
+      final Pageable pageable, final AtomicInteger contador) {
+    log.info("Iniciando pesquisa de contratos. Página: {}", pageable);
 
-    final var contratosOracle =
-        contratoOracleRepository.findContratoOraclesByCcustoAndEmpresa(
-            centroDeCusto, empresa, pageable);
+    final var contratosOracle = contratoOracleRepository.findContratoOracles(pageable);
 
     if (contratosOracle.isEmpty()) {
-      log.warn(
-          "Nenhum contrato encontrado. Empresa: {}, Centro de Custo: {}, Página: {}",
-          empresa,
-          centroDeCusto,
-          pageable);
+      log.warn("Nenhum contrato encontrado. Página: {}", pageable);
       return Page.empty(pageable);
     }
 
     log.debug(
-        "Encontrados {} contratos para Empresa: {}, Centro de Custo: {}, Página: {}",
-        contratosOracle.getTotalElements(),
-        empresa,
-        centroDeCusto,
-        pageable);
+        "Encontrados {} contratos para Página: {}", contratosOracle.getTotalElements(), pageable);
 
     final long total = contratosOracle.getTotalElements();
 
@@ -86,7 +69,7 @@ public class ArencoOracleServiceImpl implements ArencoOracleService {
               progressoFormatado,
               contrato.getNumeContrato());
 
-          return toContratoComTitulosOracleRecord(contrato, empresa);
+          return toContratoComTitulosOracleRecord(contrato, contrato.getEmpresa());
         });
   }
 

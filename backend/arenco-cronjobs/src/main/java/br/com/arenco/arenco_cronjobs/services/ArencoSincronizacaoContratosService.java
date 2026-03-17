@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface ArencoSincronizacaoContratosService {
     List<BoletoAProcessarModel> sincronizarContrato(
-      final String empresa,
       final UserModel clienteModel,
       final ContratoOracle contratoOracle,
       final List<TituloAReceberOracle> tituloAReceberOracleList,
